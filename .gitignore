@@ -1,0 +1,23 @@
+.DS_Store
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Output files
+*.out
+
+# Go specific
+*.test
+*.prof
+
+# Dependency directories
+/vendor/
+/go.sum
+
+# IDE files
+.idea/
+.vscode/

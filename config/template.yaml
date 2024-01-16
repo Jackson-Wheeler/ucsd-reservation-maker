@@ -1,25 +1,26 @@
 # Configuration file for defining desired reservations
 
 # -- Reservation Details --
-# Number of People
-num_people: 4
-# Event Name
-event_name: Group Study
+reservation_details:
+  # Number of People
+  num_people: 4
+  # Event Name
+  event_name: Group Study
 
-# Event Type. Options: STUDY_ROOM or NAP_NOOK
-event_type: STUDY_ROOM
+  # Event Type. Options: STUDY_ROOM or NAP_NOOK
+  event_type: STUDY_ROOM
 
-# 1st Contact Name
-contact_name: Jackson Wheeler
+  # 1st Contact Name
+  contact_name: Jackson Wheeler
 
-# 1st Contact Phone Number 
-contact_phone: 952-737-7547
+  # 1st Contact Phone Number 
+  contact_phone: 952-737-7547
 
-# 1st Contact Email
-contact_email: j1wheele@ucsd.edu
+  # 1st Contact Email
+  contact_email: j1wheele@ucsd.edu
 
-# Description of Event
-description: Group Study 
+  # Description of Event
+  description: Group Study 
 # --- End of Reservation Details ---
 
 

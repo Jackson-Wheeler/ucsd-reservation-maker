@@ -9,6 +9,11 @@ const (
 	WELCOME_MESSAGE = "Welcome to the UCSD Reservation maker!\n"
 )
 
+type SiteCredentials struct {
+	username string
+	password string
+}
+
 func main() {
 	// introductory message
 	fmt.Printf("\n%s\n", WELCOME_MESSAGE)
@@ -29,4 +34,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	// read environment variables
+	siteCredentials := readEnvVariables()
+
+}
+
+func readEnvVariables() SiteCredentials {
+	username := os.Getenv("USERNAME")
+	password := os.Getenv("PASSWORD")
+	if username == "" || password == "" {
+		fmt.Println("please set USERNAME and PASSWORD environment variables in .env file")
+		os.Exit(1)
+	}
+	return SiteCredentials{username: username, password: password}
 }

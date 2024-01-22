@@ -3,16 +3,15 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"gopkg.in/yaml.v2"
 )
 
 // -- Configuration File Struct Definitions --
 type Config struct {
-	ReservationDetails       ReservationDetails         `yaml:"reservation_details"`
-	RoomPreferenceOrder      []string                   `yaml:"room_preference_order"`
-	ReservationDatesAndTimes []ReservationDatesAndTimes `yaml:"reservation_dates_and_times"`
+	ReservationDetails  ReservationDetails `yaml:"reservation_details"`
+	RoomPreferenceOrder []string           `yaml:"room_preference_order"`
+	ReservationTimes    []ReservationTime  `yaml:"reservation_times"`
 }
 
 type ReservationDetails struct {
@@ -25,37 +24,10 @@ type ReservationDetails struct {
 	Description  string `yaml:"description"`
 }
 
-type ReservationDatesAndTimes struct {
-	StartOfWeekDate string                        `yaml:"start_of_week_date"`
-	Reservations    map[DayOfWeek]ReservationTime `yaml:"reservations"`
-}
-
 type ReservationTime struct {
+	Date      string `yaml:"date"`
 	StartTime string `yaml:"startTime"`
 	EndTime   string `yaml:"endTime"`
-}
-
-// Define Day of the Week
-type DayOfWeek string
-
-const (
-	Sunday    DayOfWeek = "Sunday"
-	Monday    DayOfWeek = "Monday"
-	Tuesday   DayOfWeek = "Tuesday"
-	Wednesday DayOfWeek = "Wednesday"
-	Thursday  DayOfWeek = "Thursday"
-	Friday    DayOfWeek = "Friday"
-	Saturday  DayOfWeek = "Saturday"
-)
-
-func isValidDayOfWeek(day string) bool {
-	day = strings.ToLower(day)
-	switch day {
-	case string(Sunday), string(Monday), string(Tuesday), string(Wednesday), string(Thursday), string(Friday), string(Saturday):
-		return true
-	default:
-		return false
-	}
 }
 
 // Parse Configuration File
@@ -78,7 +50,7 @@ func parseConfigFile(configFilePath string) (Config, error) {
 	// TODO: remove this
 	fmt.Printf("Reservation Details:\n%+v\n\n", config.ReservationDetails)
 	fmt.Printf("Room Preference Order:\n%+v\n\n", config.RoomPreferenceOrder)
-	fmt.Printf("Reservation Dates and Times:\n%+v\n\n", config.ReservationDatesAndTimes)
+	fmt.Printf("Reservation Times:\n%+v\n\n", config.ReservationTimes)
 
 	return config, nil
 }

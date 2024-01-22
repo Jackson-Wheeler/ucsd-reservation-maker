@@ -25,71 +25,30 @@ reservation_details:
 
 
 # -- Room Preference Order --
-# Notes:
-  # Use "PC #". Example: "PC 0" for "Price Center Study Room 0"
-  # And use "PLB" for "Port of Long Beach"
+# Note: write name exactly as it appears on the reservation page
 room_preference_order:
-  - PC 0
-  - PC 4
-  - PC 5
-  - PC 6
+  - Price Center Study Room 0
+  - Price Center Study Room 4
+  - Price Center Study Room 5
+  - Price Center Study Room 6
 # --- End of Room Preference Order ---
 
 
 # -- Reservation Dates & Times --
-# Make reservations for multiple weeks by adding more "start_of_week_date" sections
-reservation_dates_and_times:
-
-  # Start of Week Date (Sunday) - write the date for the Sunday of the week you want to reserve
-  - start_of_week_date: 1/14/2024
-    # Days of the week you want to reserve & the start/end times for each day 
-    # (Comment out, or delete, any days you don't want to reserve)
-    reservations:
-
-      Monday:
-        startTime: 11am
-        endTime: 3pm
-
-      Tuesday:
-        startTime: 11am
-        endTime: 3pm
-
-      Wednesday:
-        startTime: 11am
-        endTime: 3pm
-        
-      Thursday:
-        startTime: 11am
-        endTime: 3pm
-
-      Friday:
-        startTime: 11am
-        endTime: 3pm
-
-  # Start of Week Date (Sunday) - write the date for the Sunday of the week you want to reserve
-  - start_of_week_date: 1/14/2024
-    # Days of the week you want to reserve & the start/end times for each day 
-    # (Comment out, or delete, any days you don't want to reserve)
-    reservations:
-
-      Monday:
-        startTime: 11am
-        endTime: 3pm
-
-      Tuesday:
-        startTime: 11am
-        endTime: 3pm
-
-      Wednesday:
-        startTime: 11am
-        endTime: 3pm
-        
-      Thursday:
-        startTime: 11am
-        endTime: 3pm
-
-      Friday:
-        startTime: 11am
-        endTime: 3pm
-
+reservation_times:
+  - date: 1/23/2024
+    startTime: 11am
+    endTime: 3pm
+  - date: 1/24/2024
+    startTime: 11am
+    endTime: 3pm
+  - date: 1/25/2024
+    startTime: 11am
+    endTime: 3pm
+  - date: 1/28/2024
+    startTime: 11am
+    endTime: 3pm
+  - date: 1/29/2024
+    startTime: 11am
+    endTime: 3pm
 # --- End of Reservation Dates & Times ---

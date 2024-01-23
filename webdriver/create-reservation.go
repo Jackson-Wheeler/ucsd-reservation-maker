@@ -17,6 +17,7 @@ func createReservation(driver selenium.WebDriver, time myconfig.ReservationTime,
 	// click the create reservation button
 	myClickElement(driver, selenium.ByLinkText, CREATE_RESERVATION_BTN_TEXT)
 
+	// click the study room booking button
 	myClickElement(driver, selenium.ByXPATH, STUDY_ROOM_BOOKING_BTN_XPATH)
 
 }

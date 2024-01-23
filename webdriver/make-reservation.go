@@ -1,11 +1,8 @@
 package webdriver
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"path/filepath"
-	"runtime"
 	"time"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
@@ -22,81 +19,34 @@ type SiteCredentials struct {
 }
 
 func MakeReservation(config myconfig.Config, siteCredentials SiteCredentials) {
-	// initialize a Chrome browser instance on port 4444
-	driverPath, err := getDriverPath()
-	if err != nil {
-		log.Fatal("Error:", err)
-	}
-
-	service, err := selenium.NewChromeDriverService(driverPath, 4444)
-	if err != nil {
-		log.Fatal("Error:", err)
-	}
+	// initialize the Selenium service & webdriver
+	service, driver := initializeWebDriver(false)
 	defer service.Stop()
 
-	// configure the browser options
-	caps := selenium.Capabilities{}
-
-	// create a new remote client with the specified options
-	driver, err := selenium.NewRemote(caps, "")
-	if err != nil {
-		log.Fatal("Error:", err)
-	}
-
-	// maximize the current window to avoid responsive rendering
-	// err = driver.MaximizeWindow("")
-	// if err != nil {
-	// 	log.Fatal("Error:", err)
-	// }
-
 	// visit the target page
-	err = driver.Get(SITE_URL)
-	if err != nil {
-		log.Fatal("Error:", err)
-	}
+	visitTargetPage(driver)
 
 	// Login
-	err = login(driver, siteCredentials)
-	if err != nil {
-		log.Fatal("Error:", err)
+	//login(driver, siteCredentials)
+
+	// Create Reservations
+	for _, time := range config.ReservationTimes {
+		createReservation(driver, time, config.RoomPreferenceOrder, config.ReservationDetails)
 	}
 
-	// wait for 10 seconds before closing the browser
+	// wait for delay before closing the browser
 	time.Sleep(3 * time.Second)
 }
 
-// getDriverPath returns the path to the correct chromedriver executable based on the host OS & Architecutre
-func getDriverPath() (string, error) {
-	const DRIVER_DIR = "drivers"
-	const DRIVER_TYPE_DIR_PREFIX = "chromedriver-"
-	const DRIVER_NAME = "chromedriver"
-	var driverType string
-
-	switch runtime.GOOS {
-	case "linux":
-		driverType = "linux64"
-	case "windows":
-		driverType = "win64"
-	case "darwin":
-		if runtime.GOARCH == "amd64" {
-			driverType = "mac-x64"
-		} else if runtime.GOARCH == "arm64" {
-			driverType = "mac-arm64"
-		} else {
-			return "", errors.New("unsupported architecture with darwin OS")
-		}
-	default:
-		return "", errors.New("unsupported operating system: " + runtime.GOOS)
+func visitTargetPage(driver selenium.WebDriver) {
+	err := driver.Get(SITE_URL)
+	if err != nil {
+		errMsg := fmt.Sprintf("MakeReservation(): failed to navigate to target page: '%s'", SITE_URL)
+		log.Fatalf("Error: %s - %v", errMsg, err)
 	}
-
-	fmt.Printf("Selenium chromedriver type: %s\n", driverType)
-
-	driverTypeDir := fmt.Sprintf("%s%s", DRIVER_TYPE_DIR_PREFIX, driverType)
-	driverPath := filepath.Join(".", DRIVER_DIR, driverTypeDir, DRIVER_NAME)
-	return driverPath, nil
 }
 
-func login(driver selenium.WebDriver, siteCredentials SiteCredentials) error {
+func login(driver selenium.WebDriver, siteCredentials SiteCredentials) {
 	const LOGIN_BTN_TEXT = "Login"
 	const USER_ID_INPUT_ID = "userID_input"
 	const PASSWORD_INPUT_ID = "password_input"
@@ -116,6 +66,4 @@ func login(driver selenium.WebDriver, siteCredentials SiteCredentials) error {
 
 	// find the sign in button by its id
 	myClickElement(driver, selenium.ByID, SIGN_IN_BTN_ID)
-
-	return nil
 }

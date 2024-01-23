@@ -64,10 +64,10 @@ func login(driver selenium.WebDriver, siteCredentials SiteCredentials) {
 	myNavToMostRecentTab(driver)
 
 	// enter username
-	myInputText(driver, selenium.ByID, USER_ID_INPUT_ID, siteCredentials.Username)
+	mySendKeys(driver, selenium.ByID, USER_ID_INPUT_ID, siteCredentials.Username)
 
 	// find the password input field by its name
-	myInputText(driver, selenium.ByID, PASSWORD_INPUT_ID, siteCredentials.Password)
+	mySendKeys(driver, selenium.ByID, PASSWORD_INPUT_ID, siteCredentials.Password)
 
 	// find the sign in button by its id
 	myClickElement(driver, selenium.ByID, SIGN_IN_BTN_ID)

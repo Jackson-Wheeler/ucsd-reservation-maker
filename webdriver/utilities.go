@@ -16,6 +16,15 @@ func myFindElement(driver selenium.WebDriver, by string, value string) selenium.
 	return elem
 }
 
+func myFindElements(driver selenium.WebDriver, by string, value string) []selenium.WebElement {
+	elems, err := driver.FindElements(by, value)
+	if err != nil {
+		errMsg := fmt.Sprintf("failed to find element by %s with value '%s'", by, value)
+		log.Fatalf("Error: %s - %v", errMsg, err)
+	}
+	return elems
+}
+
 func myClickElement(driver selenium.WebDriver, by string, value string) {
 	elem := myFindElement(driver, by, value)
 	err := elem.Click()
@@ -41,9 +50,25 @@ func myNavToMostRecentTab(driver selenium.WebDriver) {
 	}
 }
 
-func myInputText(driver selenium.WebDriver, by string, value string, text string) {
+func mySendKeys(driver selenium.WebDriver, by string, value string, text string) {
 	elem := myFindElement(driver, by, value)
 	err := elem.SendKeys(text)
+	if err != nil {
+		errMsg := fmt.Sprintf("failed to input text '%s' into element with {'%s'='%s'}", text, by, value)
+		log.Fatalf("Error: %s - %v", errMsg, err)
+	}
+}
+
+func myClearAndSendKeys(driver selenium.WebDriver, by string, value string, text string) {
+	elem := myFindElement(driver, by, value)
+
+	err := elem.Clear()
+	if err != nil {
+		errMsg := fmt.Sprintf("failed to clear element with {'%s'='%s'}", by, value)
+		log.Fatalf("Error: %s - %v", errMsg, err)
+	}
+
+	err = elem.SendKeys(text)
 	if err != nil {
 		errMsg := fmt.Sprintf("failed to input text '%s' into element with {'%s'='%s'}", text, by, value)
 		log.Fatalf("Error: %s - %v", errMsg, err)

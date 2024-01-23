@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
+	"github.com/Jackson-Wheeler/ucsd-reservation-maker/webdriver"
 	"github.com/joho/godotenv"
 )
 
@@ -24,7 +26,7 @@ func main() {
 	// read configuration file
 	configFilePath := os.Args[1]
 	fmt.Printf("reading configuration details from: %s\n", configFilePath)
-	config, err := parseConfigFile(configFilePath)
+	config, err := myconfig.ParseConfigFile(configFilePath)
 	if err != nil {
 		log.Fatal("Error: failed to parse configuration file:", err)
 	}
@@ -33,10 +35,10 @@ func main() {
 	siteCredentials := readEnvVariables()
 
 	// make reservation
-	MakeReservation(config, siteCredentials)
+	webdriver.MakeReservation(config, siteCredentials)
 }
 
-func readEnvVariables() SiteCredentials {
+func readEnvVariables() webdriver.SiteCredentials {
 	godotenv.Load(".env")
 
 	username := os.Getenv("USERNAME")
@@ -44,5 +46,5 @@ func readEnvVariables() SiteCredentials {
 	if username == "" || password == "" {
 		log.Fatal("Error: please set USERNAME and PASSWORD environment variables in .env file")
 	}
-	return SiteCredentials{username: username, password: password}
+	return webdriver.SiteCredentials{Username: username, Password: password}
 }

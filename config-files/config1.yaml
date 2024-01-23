@@ -39,19 +39,4 @@ reservation_times:
   - date: 1/25/2024
     startTime: 11am
     endTime: 3pm
-  - date: 1/26/2024
-    startTime: 11am
-    endTime: 3pm
-  - date: 1/29/2024
-    startTime: 11am
-    endTime: 3pm
-  - date: 1/30/2024
-    startTime: 11am
-    endTime: 3pm
-  - date: 1/31/2024
-    startTime: 11am
-    endTime: 3pm
-  - date: 2/1/2024
-    startTime: 11am
-    endTime: 3pm
 # --- End of Reservation Dates & Times ---

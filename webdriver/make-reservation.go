@@ -22,6 +22,7 @@ func MakeReservation(config myconfig.Config, siteCredentials SiteCredentials) {
 	// initialize the Selenium service & webdriver
 	service, driver := initializeWebDriver(false)
 	defer service.Stop()
+	fmt.Println()
 
 	// visit the target page
 	visitTargetPage(driver)
@@ -39,6 +40,8 @@ func MakeReservation(config myconfig.Config, siteCredentials SiteCredentials) {
 }
 
 func visitTargetPage(driver selenium.WebDriver) {
+	fmt.Printf("Navigating to target page: '%s'...\n", SITE_URL)
+
 	err := driver.Get(SITE_URL)
 	if err != nil {
 		errMsg := fmt.Sprintf("MakeReservation(): failed to navigate to target page: '%s'", SITE_URL)
@@ -51,6 +54,8 @@ func login(driver selenium.WebDriver, siteCredentials SiteCredentials) {
 	const USER_ID_INPUT_ID = "userID_input"
 	const PASSWORD_INPUT_ID = "password_input"
 	const SIGN_IN_BTN_ID = "pc_btnLogin"
+
+	fmt.Printf("Logging in as user: '%s'...\n", siteCredentials.Username)
 
 	// click the login button
 	myClickElement(driver, selenium.ByLinkText, LOGIN_BTN_TEXT)

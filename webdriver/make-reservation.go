@@ -28,7 +28,7 @@ func MakeReservation(config myconfig.Config, siteCredentials SiteCredentials) {
 	visitTargetPage(driver)
 
 	// Login
-	//login(driver, siteCredentials)
+	login(driver, siteCredentials)
 
 	// Create Reservations
 	for _, time := range config.ReservationTimes {

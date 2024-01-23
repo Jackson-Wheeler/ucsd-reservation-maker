@@ -2,17 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 const (
 	WELCOME_MESSAGE = "Welcome to the UCSD Reservation maker!\n"
 )
-
-type SiteCredentials struct {
-	username string
-	password string
-}
 
 func main() {
 	// introductory message
@@ -20,31 +18,31 @@ func main() {
 
 	// parse command line arguments
 	if len(os.Args) < 2 {
-		fmt.Println("usage: ./ucsd-reservation-maker <config file path>")
-		fmt.Println("please provide a configuration file path")
-		os.Exit(1)
+		log.Fatal("Error: please provide a configuration file path\nusage: ./ucsd-reservation-maker <config file path>")
 	}
 
 	// read configuration file
 	configFilePath := os.Args[1]
 	fmt.Printf("reading configuration details from: %s\n", configFilePath)
-	_, err := parseConfigFile(configFilePath)
+	config, err := parseConfigFile(configFilePath)
 	if err != nil {
-		fmt.Printf("failed to parse configuration file: %v\n", err)
-		os.Exit(1)
+		log.Fatal("Error: failed to parse configuration file:", err)
 	}
 
 	// read environment variables
 	siteCredentials := readEnvVariables()
 
+	// make reservation
+	MakeReservation(config, siteCredentials)
 }
 
 func readEnvVariables() SiteCredentials {
+	godotenv.Load(".env")
+
 	username := os.Getenv("USERNAME")
 	password := os.Getenv("PASSWORD")
 	if username == "" || password == "" {
-		fmt.Println("please set USERNAME and PASSWORD environment variables in .env file")
-		os.Exit(1)
+		log.Fatal("Error: please set USERNAME and PASSWORD environment variables in .env file")
 	}
 	return SiteCredentials{username: username, password: password}
 }

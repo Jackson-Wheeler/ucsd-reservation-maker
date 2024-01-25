@@ -35,7 +35,7 @@ func main() {
 	siteCredentials := readEnvVariables()
 
 	// make reservation
-	webdriver.MakeReservation(config, siteCredentials)
+	webdriver.MakeReservations(config, siteCredentials)
 }
 
 func readEnvVariables() webdriver.SiteCredentials {

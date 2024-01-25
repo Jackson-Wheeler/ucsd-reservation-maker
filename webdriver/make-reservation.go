@@ -18,7 +18,7 @@ type SiteCredentials struct {
 	Password string
 }
 
-func MakeReservation(config myconfig.Config, siteCredentials SiteCredentials) {
+func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
 	// initialize the Selenium service & webdriver
 	service, driver := initializeWebDriver(false)
 	defer service.Stop()

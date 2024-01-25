@@ -29,8 +29,9 @@ func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTi
 	// click the study room booking button
 	myClickElement(driver, selenium.ByXPATH, STUDY_ROOM_BOOKING_BTN_XPATH)
 
+	time.Sleep(500 * time.Millisecond) // TODO change to a wait for element ready
+
 	// input the booking date
-	// TODO fix this
 	myClearAndSendKeys(driver, selenium.ByID, BOOOKING_DATE_INPUT_ID, resTime.Date)
 	mySendKeys(driver, selenium.ByID, BOOOKING_DATE_INPUT_ID, selenium.TabKey)
 
@@ -43,7 +44,7 @@ func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTi
 	// click the search button
 	myClickElement(driver, selenium.ByXPATH, SEARCH_BTN_XPATH)
 
-	time.Sleep(3 * time.Second) // TODO change to a wait for element ready
+	time.Sleep(2 * time.Second) // TODO change to a wait for element ready
 
 	// get all room items
 	// TODO get room-column items & save & print their title attribute (make struct for a room)

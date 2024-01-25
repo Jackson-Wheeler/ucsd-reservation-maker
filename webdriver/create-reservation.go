@@ -3,13 +3,14 @@ package webdriver
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
 	"github.com/tebeka/selenium"
 )
 
 // creates a reservation for the specified time given the room preference order and reservation details
-func createReservation(driver selenium.WebDriver, time myconfig.ReservationTime, roomPreferenceOrder []string, reservationDetails myconfig.ReservationDetails) {
+func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTime, roomPreferenceOrder []string, reservationDetails myconfig.ReservationDetails) {
 	const (
 		CREATE_RESERVATION_BTN_TEXT  = "Create A Reservation"
 		STUDY_ROOM_BOOKING_BTN_XPATH = `//*[@aria-label='Book Now With The "Reserve Spaces | Study Rooms & Open Desk" Template']`
@@ -17,10 +18,10 @@ func createReservation(driver selenium.WebDriver, time myconfig.ReservationTime,
 		START_TIME_INPUT_ID          = "start-time-input"
 		END_TIME_INPUT_ID            = "end-time-input"
 		SEARCH_BTN_XPATH             = `//button[normalize-space()='Search']`
-		ROOM_ITEM_CLASS              = "room-column column"
+		ROOM_ITEM_CSS_SELECTOR       = ".column-text.available"
 	)
 
-	fmt.Printf("\nCreating reservation for %s from %s to %s...\n", time.Date, time.StartTime, time.EndTime)
+	fmt.Printf("\nCreating reservation for %s from %s to %s...\n", resTime.Date, resTime.StartTime, resTime.EndTime)
 
 	// click the create reservation button
 	myClickElement(driver, selenium.ByLinkText, CREATE_RESERVATION_BTN_TEXT)
@@ -29,27 +30,59 @@ func createReservation(driver selenium.WebDriver, time myconfig.ReservationTime,
 	myClickElement(driver, selenium.ByXPATH, STUDY_ROOM_BOOKING_BTN_XPATH)
 
 	// input the booking date
-	myClearAndSendKeys(driver, selenium.ByID, BOOOKING_DATE_INPUT_ID, time.Date)
+	// TODO fix this
+	myClearAndSendKeys(driver, selenium.ByID, BOOOKING_DATE_INPUT_ID, resTime.Date)
+	mySendKeys(driver, selenium.ByID, BOOOKING_DATE_INPUT_ID, selenium.TabKey)
 
 	// input the start time
-	myClearAndSendKeys(driver, selenium.ByID, START_TIME_INPUT_ID, time.StartTime)
+	myClearAndSendKeys(driver, selenium.ByID, START_TIME_INPUT_ID, resTime.StartTime)
 
 	// input the end time
-	myClearAndSendKeys(driver, selenium.ByID, END_TIME_INPUT_ID, time.EndTime)
+	myClearAndSendKeys(driver, selenium.ByID, END_TIME_INPUT_ID, resTime.EndTime)
 
 	// click the search button
 	myClickElement(driver, selenium.ByXPATH, SEARCH_BTN_XPATH)
 
+	time.Sleep(3 * time.Second) // TODO change to a wait for element ready
+
 	// get all room items
-	roomItems := myFindElements(driver, selenium.ByClassName, ROOM_ITEM_CLASS)
+	// TODO get room-column items & save & print their title attribute (make struct for a room)
+	// for each room name in roomPreferenceOrder, find that room:
+	// - find the child with class "fa-plus-circle"
+	// - click it
+	// - if fail, go on to next
+	// - else, fill out pop up window & check that selected rooms has a room in it, if not, go on to next, else, break out of loop
+	// (above four points -> function returning err, selectRoom() - error describes what went wrong)
+	roomItems := myFindElements(driver, selenium.ByCSSSelector, ROOM_ITEM_CSS_SELECTOR)
+
+	fmt.Printf("Length of room items: %d\n", len(roomItems))
 
 	for _, roomItem := range roomItems {
 		text, err1 := roomItem.Text()
-		outerHTML, err2 := roomItem.GetAttribute("outerHTML")
-		fmt.Printf("Room Item Text: %s\n", text)
-		fmt.Printf("Room Item OuterHTML: %s\n", outerHTML)
-		if err1 != nil || err2 != nil {
-			log.Fatal("Error: failed to get room item text or outerHTML - ", err1, err2)
+		if err1 != nil {
+			log.Fatal("Error: failed to get room item text - ", err1)
 		}
+		fmt.Printf("Room Item Text: %s\n", text)
+
+		style, err2 := roomItem.GetAttribute("style")
+		if err2 != nil {
+			style = ""
+		}
+		fmt.Printf("Room Item Style Attribute: %s\n", style)
 	}
+
+	// Reservation Details, button aria-label="Create a Reservation/Reservation Details"
+	// event name id="event-name" - clear & send keys
+	// event type id="event-type" - just do nothing if event type is study room
+	// organization id="availablegroups" - click, down arrow twice, enter
+	// id="1stContactName" - clear & send keys
+	// id="1stContactPhone1" - clear & send keys
+	// id="1stContactEmail"	- clear & send keys
+	// choose who you are id="28" - click, down arrow three times, enter
+	// description id="27" - clear & send keys
+
+	// Create reservation button, data-bind="click: function(){ return saveReservation(); }" - click
+	// confirm reservation was made
+
+	time.Sleep(5 * time.Second)
 }

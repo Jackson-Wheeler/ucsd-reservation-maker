@@ -116,4 +116,7 @@ const (
 	// finish reservation
 	FINISH_RESERVATION_BTN_BY  = selenium.ByXPATH
 	FINISH_RESERVATION_BTN_VAL = `//*[@data-bind='click: function(){ return saveReservation(); }']`
+
+	OK_CONFIRMATION_BTN_BY  = selenium.ByXPATH
+	OK_CONFIRMATION_BTN_VAL = `//button[@id='help-text-close-btn']`
 )

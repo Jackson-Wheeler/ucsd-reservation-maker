@@ -19,16 +19,15 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
 	// visit the target page
 	visitTargetPage(driver)
 
-	// Login
+	// login
 	login(driver, siteCredentials)
 
-	// Create Reservations
+	// create each reservation
 	for _, time := range config.ReservationTimes {
 		createReservation(driver, time, config.RoomPreferenceOrder, config.ReservationDetails)
 	}
 
-	// TEMP: keep browser by exiting on error
-	log.Fatal("Done")
+	fmt.Println("\nDone - see above for log of created reservations")
 }
 
 func visitTargetPage(driver selenium.WebDriver) {
@@ -74,7 +73,7 @@ func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTi
 	// select room
 	roomName, err := selectRoom(driver, roomPreferenceOrder, reservationDetails)
 	if err != nil {
-		fmt.Printf("no reservation made for %s from %s to %s - %v\n", resTime.Date, resTime.StartTime, resTime.EndTime, err)
+		fmt.Printf("*no reservation made for %s from %s to %s - %v\n", resTime.Date, resTime.StartTime, resTime.EndTime, err)
 		return
 	}
 	fmt.Printf("selected room '%s'\n", roomName)
@@ -84,4 +83,6 @@ func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTi
 
 	// click create reservation button
 	finishReservation(driver)
+
+	fmt.Printf("*reservation created for '%s'\n", roomName)
 }

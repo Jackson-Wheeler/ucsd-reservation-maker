@@ -29,22 +29,23 @@ reservation_details:
 # Note: write name exactly as it appears on the reservation page
 room_preference_order:
   - Price Center Study Room 0
-  # - Price Center Study Room 4
-  # - Price Center Study Room 5
-  # - Price Center Study Room 6
-  # - Price Center Study Room 7
+  - Price Center Study Room 4
+  - Price Center Study Room 5
+  - Price Center Study Room 6
+  - Price Center Study Room 7
+  # - Price Center Study Room 8
+  # - Price Center Study Room 2
+  # - Price Center Study Room 3
+  # - Price Center Study Room 1
 # --- End of Room Preference Order ---
 
 
 # -- Reservation Dates & Times --
 reservation_times:
-  - date: 1/29/2024
+  - date: 2/6/2024
     startTime: 11am
     endTime: 3pm
-  - date: 1/30/2024
-    startTime: 11am
-    endTime: 3pm
-  - date: 1/31/2024
+  - date: 2/7/2024
     startTime: 11am
     endTime: 3pm
 # --- End of Reservation Dates & Times ---

@@ -141,7 +141,7 @@ func ScrollToTop(driver selenium.WebDriver) {
 }
 
 func WaitForElementReady(driver selenium.WebDriver, by string, value string) {
-	const MAX_WAIT_TIME = 5 * time.Second
+	const MAX_WAIT_TIME = 10 * time.Second
 
 	err := driver.WaitWithTimeout(func(wd selenium.WebDriver) (bool, error) {
 		elem, err := wd.FindElement(by, value)

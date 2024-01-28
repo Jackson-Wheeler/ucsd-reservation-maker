@@ -2,6 +2,7 @@ package reservationMaker
 
 import (
 	"log"
+	"time"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/webdriver"
@@ -10,6 +11,9 @@ import (
 
 // begin booking: create reservation btn & booking type btn
 func beginBooking(driver selenium.WebDriver, bookingType int) {
+	// wait for content to load
+	webdriver.FindAndClickElement(driver, CREATE_RESERVATION_BTN_BY, CREATE_RESERVATION_BTN_VAL)
+
 	// click the create reservation button
 	webdriver.FindAndClickElement(driver, CREATE_RESERVATION_BTN_BY, CREATE_RESERVATION_BTN_VAL)
 
@@ -81,11 +85,16 @@ func addReservationDetails(driver selenium.WebDriver, reservationDetails myconfi
 	webdriver.ClearAndSendKeys(driver, DESCRIPTION_INPUT_BY, DESCRIPTION_INPUT_VAL, reservationDetails.Description)
 }
 
-// Create reservation button, data-bind="click: function(){ return saveReservation(); }" - click
 // finish reservation: click create reservation button
 func finishReservation(driver selenium.WebDriver) {
-	// click the create reservation button
-	finishBtn := webdriver.FindElement(driver, FINISH_RESERVATION_BTN_BY, FINISH_RESERVATION_BTN_VAL)
-	webdriver.ScrollElemIntoView(driver, finishBtn, "finish reservation button")
-	webdriver.ClickElement(finishBtn, "finish reservation button")
+	// scroll to top
+	webdriver.ScrollToTop(driver)
+
+	// click the create reservation button (the first one on the page)
+	webdriver.FindAndClickElement(driver, FINISH_RESERVATION_BTN_BY, FINISH_RESERVATION_BTN_VAL)
+
+	// dismiss the pop up
+	webdriver.WaitForElementReady(driver, OK_CONFIRMATION_BTN_BY, OK_CONFIRMATION_BTN_VAL)
+	time.Sleep(500 * time.Millisecond)
+	webdriver.FindAndClickElement(driver, OK_CONFIRMATION_BTN_BY, OK_CONFIRMATION_BTN_VAL)
 }

@@ -37,6 +37,9 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
 
 	// wait for delay before closing the browser
 	time.Sleep(3 * time.Second)
+
+	// TEMP: keep browser by exiting on error
+	log.Fatal("Done")
 }
 
 func visitTargetPage(driver selenium.WebDriver) {

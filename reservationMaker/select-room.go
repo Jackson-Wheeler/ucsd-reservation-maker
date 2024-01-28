@@ -21,13 +21,16 @@ func selectRoom(driver selenium.WebDriver, roomPreferenceOrder []string, reserva
 
 	// attempt selecting rooms in order of preference
 	for _, roomName := range roomPreferenceOrder {
-		err := attemptSelectRoom(driver, roomMap[roomName], reservationDetails)
+		selectedRoomName, err := attemptSelectRoom(driver, roomMap[roomName], reservationDetails)
 		if err != nil {
 			fmt.Printf("room '%s' selection failed: %v\n", roomName, err)
 			continue
 		}
+		if selectedRoomName != roomName {
+			fmt.Printf("selection inconsistency: instead of '%s', '%s' was selected\n", roomName, selectedRoomName)
+		}
 		// successfully selected room
-		return roomName, nil
+		return selectedRoomName, nil
 	}
 
 	// if preferred rooms are not available
@@ -54,14 +57,14 @@ func getRoomMap(driver selenium.WebDriver) map[string]selenium.WebElement {
 }
 
 // attempts to click to select the given room, and fills out the initial pop up, returns error if unsuccessful
-func attemptSelectRoom(driver selenium.WebDriver, roomItem selenium.WebElement, reservationDetails myconfig.ReservationDetails) error {
+func attemptSelectRoom(driver selenium.WebDriver, roomItem selenium.WebElement, reservationDetails myconfig.ReservationDetails) (string, error) {
 	// find child button for selecting room
 	selectBtn := webdriver.FindElementFromElement(roomItem, ROOM_SELECT_BTN_BY, ROOM_SELECT_BTN_VAL)
 
 	// check if btn is displayed
 	isDisplayed := webdriver.IsDisplayed(selectBtn)
 	if !isDisplayed {
-		return fmt.Errorf("room is not available")
+		return "", fmt.Errorf("room is not available")
 	}
 
 	// scroll the select button into view
@@ -70,24 +73,22 @@ func attemptSelectRoom(driver selenium.WebDriver, roomItem selenium.WebElement, 
 	// click the select button
 	err := selectBtn.Click()
 	if err != nil {
-		return fmt.Errorf("failed to click select button - %v", err)
+		return "", fmt.Errorf("failed to click select button - %v", err)
 	}
 
+	// fill in initial pop up
 	fillInitialPopUp(driver, reservationDetails)
 
 	// check if room was successfully selected (shows up in selected rooms)
-	err = confirmSelection(driver)
+	selectedRoomName, err := confirmSelection(driver)
 	if err != nil {
-		return err
+		return "", err
 	}
-	// selectedRooms := myFindElements(driver, selenium.ByCSSSelector, SELECTED_ROOM_CSS_SELECTOR)
-	// if len(selectedRooms) == 0 {
-	// 	return fmt.Errorf("room '%s' was not successfully selected", roomName)
-	// }
 
-	return nil
+	return selectedRoomName, nil
 }
 
+// fills out the initial pop up: number of attendees & setup type
 func fillInitialPopUp(driver selenium.WebDriver, reservationDetails myconfig.ReservationDetails) {
 	// wait for content to load
 	webdriver.WaitForElementReady(driver, NUMBER_OF_ATTENDEES_INPUT_BY, NUMBER_OF_ATTENDEES_INPUT_VAL)
@@ -100,21 +101,35 @@ func fillInitialPopUp(driver selenium.WebDriver, reservationDetails myconfig.Res
 	// TODO expand to be able to select setup type
 
 	// click add room button
-	webdriver.ClickElement(driver, ADD_ROOM_BTN_BY, ADD_ROOM_BTN_VAL)
+	webdriver.FindAndClickElement(driver, ADD_ROOM_BTN_BY, ADD_ROOM_BTN_VAL)
 }
 
-func confirmSelection(driver selenium.WebDriver) error {
-	// Check for alert message
-	time.Sleep(500 * time.Millisecond)
+// confirms that the room was successfully selected, returns error if unsuccessful
+func confirmSelection(driver selenium.WebDriver) (string, error) {
+	// check for alert message
+	time.Sleep(500 * time.Millisecond) // allow time for alert to appear
 	alertElem := webdriver.FindElementIfExists(driver, ALERT_BY, ALERT_VAL)
 	if alertElem != nil {
 		alertMessage := getAlertMessage(alertElem)
-		return fmt.Errorf("room selection failed with alert message: %s", alertMessage)
+		return "", fmt.Errorf("room selection failed with alert message: %s", alertMessage)
 	}
 
-	return nil
+	// confirm room is in selected area
+	selectedRoom := webdriver.FindElementIfExists(driver, SELECTED_ROOM_ITEM_BY, SELECTED_ROOM_ITEM_VAL)
+	if selectedRoom == nil {
+		return "", errors.New("room selection failed")
+	}
+
+	// get selected room name
+	selectedRoomName, err := selectedRoom.Text()
+	if err != nil {
+		fmt.Println("error getting selected room name")
+	}
+
+	return selectedRoomName, nil
 }
 
+// gets the alert message from the alert element
 func getAlertMessage(alertElem selenium.WebElement) string {
 	alertMessageElem := webdriver.FindElementFromElement(alertElem, ALERT_MESSAGE_BY, ALERT_MESSAGE_VAL)
 	alertMessage, err := alertMessageElem.Text()

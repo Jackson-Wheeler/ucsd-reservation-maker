@@ -18,6 +18,14 @@ const (
 	BOOKING_TYPE_STUDENT_ORGS = 0
 	BOOKING_TYPE_STUDY_ROOM   = 1
 
+	EVENT_TYPE_STUDY_ROOM = "STUDY_ROOM"
+	EVENT_TYPE_NAP_NOOK   = "NAP_NOOK"
+
+	ORGANIZATION_CLUB_OPT_VAL        = "910"
+	ORGANIZATION_GROUP_STUDY_OPT_VAL = "5708"
+
+	RESERVER_STATUS_STUDENT_OPT_VAL = "53"
+
 	/* -- WEB PAGE LOGIN -- */
 	LOGIN_BTN_BY  = selenium.ByLinkText
 	LOGIN_BTN_VAL = "Login"
@@ -61,9 +69,6 @@ const (
 	ROOM_SELECT_BTN_BY  = selenium.ByCSSSelector
 	ROOM_SELECT_BTN_VAL = ".fa-plus-circle"
 
-	SELECTED_ROOM_ITEM_BY  = selenium.ByCSSSelector
-	SELECTED_ROOM_ITEM_VAL = ".selected-room-item"
-
 	NUMBER_OF_ATTENDEES_INPUT_BY  = selenium.ByID
 	NUMBER_OF_ATTENDEES_INPUT_VAL = "setup-add-count"
 
@@ -71,8 +76,43 @@ const (
 	ADD_ROOM_BTN_VAL = "setup--add-modal-save"
 
 	ALERT_BY  = selenium.ByCSSSelector
-	ALERT_VAL = ".alert"
+	ALERT_VAL = ".alert.alert-danger"
 
 	ALERT_MESSAGE_BY  = selenium.ByCSSSelector
 	ALERT_MESSAGE_VAL = ".message"
+
+	SELECTED_ROOM_ITEM_BY  = selenium.ByCSSSelector
+	SELECTED_ROOM_ITEM_VAL = ".selected-room-name"
+
+	// reservation details
+	RESERVATION_DETAILS_BTN_BY  = selenium.ByXPATH
+	RESERVATION_DETAILS_BTN_VAL = `//a[@aria-label='Create a Reservation/Reservation Details']`
+
+	EVENT_NAME_INPUT_BY  = selenium.ByID
+	EVENT_NAME_INPUT_VAL = "event-name"
+
+	EVENT_TYPE_INPUT_BY  = selenium.ByID
+	EVENT_TYPE_INPUT_VAL = "event-type"
+
+	ORGANIZATION_INPUT_BY  = selenium.ByID
+	ORGANIZATION_INPUT_VAL = "availablegroups"
+
+	CONTACT_NAME_INPUT_BY  = selenium.ByXPATH
+	CONTACT_NAME_INPUT_VAL = `//input[@id='1stContactName']`
+
+	CONTACT_PHONE_INPUT_BY  = selenium.ByXPATH
+	CONTACT_PHONE_INPUT_VAL = `//input[@id='1stContactPhone1']`
+
+	CONTACT_EMAIL_INPUT_BY  = selenium.ByXPATH
+	CONTACT_EMAIL_INPUT_VAL = `//input[@id='1stContactEmail']`
+
+	RESERVER_STATUS_INPUT_BY  = selenium.ByXPATH
+	RESERVER_STATUS_INPUT_VAL = `//select[@id='28']`
+
+	DESCRIPTION_INPUT_BY  = selenium.ByXPATH
+	DESCRIPTION_INPUT_VAL = `//textarea[@id='27']`
+
+	// finish reservation
+	FINISH_RESERVATION_BTN_BY  = selenium.ByXPATH
+	FINISH_RESERVATION_BTN_VAL = `//*[@data-bind='click: function(){ return saveReservation(); }']`
 )

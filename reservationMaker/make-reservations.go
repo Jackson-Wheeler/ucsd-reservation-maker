@@ -45,7 +45,7 @@ func login(driver selenium.WebDriver, siteCredentials SiteCredentials) {
 	fmt.Printf("Logging in as user: '%s'...\n", siteCredentials.Username)
 
 	// click the login button
-	webdriver.ClickElement(driver, LOGIN_BTN_BY, LOGIN_BTN_VAL)
+	webdriver.FindAndClickElement(driver, LOGIN_BTN_BY, LOGIN_BTN_VAL)
 
 	// switch to new tab
 	webdriver.NavToMostRecentTab(driver)
@@ -57,7 +57,7 @@ func login(driver selenium.WebDriver, siteCredentials SiteCredentials) {
 	webdriver.SendKeys(driver, PASSWORD_INPUT_BY, PASSWORD_INPUT_VAL, siteCredentials.Password)
 
 	// click sign in button
-	webdriver.ClickElement(driver, SIGN_IN_BTN_BY, SIGN_IN_BTN_VAL)
+	webdriver.FindAndClickElement(driver, SIGN_IN_BTN_BY, SIGN_IN_BTN_VAL)
 }
 
 // creates a reservation for the specified time given the room preference order and reservation details
@@ -79,16 +79,9 @@ func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTi
 	}
 	fmt.Printf("selected room '%s'\n", roomName)
 
-	// Reservation Details, button aria-label="Create a Reservation/Reservation Details"
-	// event name id="event-name" - clear & send keys
-	// event type id="event-type" - just do nothing if event type is study room
-	// organization id="availablegroups" - click, down arrow twice, enter
-	// id="1stContactName" - clear & send keys
-	// id="1stContactPhone1" - clear & send keys
-	// id="1stContactEmail"	- clear & send keys
-	// choose who you are id="28" - click, down arrow three times, enter
-	// description id="27" - clear & send keys
+	// add reservation details
+	addReservationDetails(driver, reservationDetails)
 
-	// Create reservation button, data-bind="click: function(){ return saveReservation(); }" - click
-	// confirm reservation was made
+	// click create reservation button
+	finishReservation(driver)
 }

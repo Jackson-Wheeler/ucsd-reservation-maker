@@ -65,14 +65,18 @@ func IsDisplayed(element selenium.WebElement) bool {
 	return isDisplayed
 }
 
-// ClickElement finds & clicks an element by the specified method and value, exits on error
-func ClickElement(driver selenium.WebDriver, by string, value string) {
-	elem := FindElement(driver, by, value)
-	err := elem.Click()
+func ClickElement(element selenium.WebElement, elemName string) {
+	err := element.Click()
 	if err != nil {
-		errMsg := fmt.Sprintf("failed to click element with {'%s'='%s'}", by, value)
+		errMsg := fmt.Sprintf("failed to click '%s' element", elemName)
 		log.Fatalf("Error: %s - %v", errMsg, err)
 	}
+}
+
+// FindAndClickElement finds & clicks an element by the specified method and value, exits on error
+func FindAndClickElement(driver selenium.WebDriver, by string, value string) {
+	elem := FindElement(driver, by, value)
+	ClickElement(elem, fmt.Sprintf("element with {'%s'='%s'}", by, value))
 }
 
 // NavToMostRecentTab switches to the most recent tab, exits on error
@@ -128,8 +132,16 @@ func ScrollElemIntoView(driver selenium.WebDriver, element selenium.WebElement, 
 	}
 }
 
+func ScrollToTop(driver selenium.WebDriver) {
+	_, err := driver.ExecuteScript("window.scrollTo(0, 0);", nil)
+	if err != nil {
+		errMsg := "failed to scroll to top of page"
+		log.Fatalf("Error: %s - %v", errMsg, err)
+	}
+}
+
 func WaitForElementReady(driver selenium.WebDriver, by string, value string) {
-	const MAX_WAIT_TIME = 10 * time.Second
+	const MAX_WAIT_TIME = 5 * time.Second
 
 	err := driver.WaitWithTimeout(func(wd selenium.WebDriver) (bool, error) {
 		elem, err := wd.FindElement(by, value)
@@ -146,4 +158,23 @@ func WaitForElementReady(driver selenium.WebDriver, by string, value string) {
 		errMsg := fmt.Sprintf("failed waiting for element by %s with value '%s'", by, value)
 		log.Fatalf("Error: %s - %v", errMsg, err)
 	}
+}
+
+// SelectFromDropdownOptions selects the option with the given value from a dropdown by the specified method and value
+func SelectFromDropdown(driver selenium.WebDriver, by string, value string, selectionValue string) {
+	// find dropdown
+	dropdownElem := FindElement(driver, by, value)
+
+	// scroll to view
+	ScrollElemIntoView(driver, dropdownElem, fmt.Sprintf("dropdown with {'%s'='%s'}", by, value))
+
+	// click the dropdown
+	ClickElement(dropdownElem, fmt.Sprintf("dropdown with {'%s'='%s'}", by, value))
+
+	// click the option with the given value
+	optionElem := FindElementFromElement(dropdownElem, selenium.ByXPATH, fmt.Sprintf("//option[@value='%s']", selectionValue))
+
+	// click the option
+	ClickElement(optionElem, fmt.Sprintf("option with value '%s' from dropdown with {'%s'='%s'}", selectionValue, by, value))
+
 }

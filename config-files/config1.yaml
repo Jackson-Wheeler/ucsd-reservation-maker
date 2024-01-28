@@ -6,7 +6,7 @@ reservation_details:
   num_people: 4
   
   # Event Name
-  event_name: Group Study
+  event_name: Jesus Lovers :)
 
   # Event Type. Options: STUDY_ROOM or NAP_NOOK
   event_type: STUDY_ROOM
@@ -29,15 +29,19 @@ reservation_details:
 # Note: write name exactly as it appears on the reservation page
 room_preference_order:
   - Price Center Study Room 0
-  - Price Center Study Room 4
-  - Price Center Study Room 5
-  - Price Center Study Room 7
+  # - Price Center Study Room 4
+  # - Price Center Study Room 5
+  # - Price Center Study Room 6
+  # - Price Center Study Room 7
 # --- End of Room Preference Order ---
 
 
 # -- Reservation Dates & Times --
 reservation_times:
   - date: 1/29/2024
+    startTime: 11am
+    endTime: 3pm
+  - date: 1/30/2024
     startTime: 11am
     endTime: 3pm
 # --- End of Reservation Dates & Times ---

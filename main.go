@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
-	"github.com/Jackson-Wheeler/ucsd-reservation-maker/webdriver"
+	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker"
 	"github.com/joho/godotenv"
 )
 
@@ -35,10 +35,10 @@ func main() {
 	siteCredentials := readEnvVariables()
 
 	// make reservation
-	webdriver.MakeReservations(config, siteCredentials)
+	reservationMaker.MakeReservations(config, siteCredentials)
 }
 
-func readEnvVariables() webdriver.SiteCredentials {
+func readEnvVariables() reservationMaker.SiteCredentials {
 	godotenv.Load(".env")
 
 	username := os.Getenv("USERNAME")
@@ -46,5 +46,5 @@ func readEnvVariables() webdriver.SiteCredentials {
 	if username == "" || password == "" {
 		log.Fatal("Error: please set USERNAME and PASSWORD environment variables in .env file")
 	}
-	return webdriver.SiteCredentials{Username: username, Password: password}
+	return reservationMaker.SiteCredentials{Username: username, Password: password}
 }

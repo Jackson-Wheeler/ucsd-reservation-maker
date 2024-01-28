@@ -2,7 +2,6 @@ package reservationMaker
 
 import (
 	"log"
-	"time"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/webdriver"
@@ -27,7 +26,8 @@ func beginBooking(driver selenium.WebDriver, bookingType int) {
 
 // set reservation time: booking date, start time, end time, click search
 func setReservationTime(driver selenium.WebDriver, resTime myconfig.ReservationTime) {
-	time.Sleep(500 * time.Millisecond) // TODO change to a wait for element ready
+	// wait for content to load
+	webdriver.WaitForElementReady(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL)
 
 	// input the booking date
 	webdriver.ClearAndSendKeys(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL, resTime.Date)

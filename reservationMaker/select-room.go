@@ -13,7 +13,8 @@ import (
 
 // select room based on room preference order, returning name of room selected, or error otherwise
 func selectRoom(driver selenium.WebDriver, roomPreferenceOrder []string, reservationDetails myconfig.ReservationDetails) (string, error) {
-	time.Sleep(3 * time.Second) // TODO change to a wait for element ready
+	// wait for content to load
+	webdriver.WaitForElementReady(driver, ROOM_ITEM_BY, ROOM_ITEM_VAL)
 
 	// map room names to web page room elements
 	roomMap := getRoomMap(driver)
@@ -88,7 +89,8 @@ func attemptSelectRoom(driver selenium.WebDriver, roomItem selenium.WebElement, 
 }
 
 func fillInitialPopUp(driver selenium.WebDriver, reservationDetails myconfig.ReservationDetails) {
-	time.Sleep(500 * time.Millisecond) // TODO change to a wait for element ready
+	// wait for content to load
+	webdriver.WaitForElementReady(driver, NUMBER_OF_ATTENDEES_INPUT_BY, NUMBER_OF_ATTENDEES_INPUT_VAL)
 
 	// number of attendees
 	for i := 0; i < reservationDetails.NumPeople; i++ {

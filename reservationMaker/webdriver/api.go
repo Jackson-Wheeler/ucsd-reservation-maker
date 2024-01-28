@@ -11,6 +11,7 @@ package webdriver
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/tebeka/selenium"
 )
@@ -123,6 +124,26 @@ func ScrollElemIntoView(driver selenium.WebDriver, element selenium.WebElement, 
 	_, err := driver.ExecuteScript("arguments[0].scrollIntoView(true);", []interface{}{element})
 	if err != nil {
 		errMsg := fmt.Sprintf("failed to scroll %s element into view", elemName)
+		log.Fatalf("Error: %s - %v", errMsg, err)
+	}
+}
+
+func WaitForElementReady(driver selenium.WebDriver, by string, value string) {
+	const MAX_WAIT_TIME = 10 * time.Second
+
+	err := driver.WaitWithTimeout(func(wd selenium.WebDriver) (bool, error) {
+		elem, err := wd.FindElement(by, value)
+		if err != nil {
+			return false, nil // Element not found, continue waiting
+		}
+		isDisplayed, err := elem.IsDisplayed()
+		if err != nil {
+			return false, nil // Error checking if element is displayed, continue waiting
+		}
+		return isDisplayed, nil // Return true if the element is displayed, false otherwise
+	}, MAX_WAIT_TIME)
+	if err != nil {
+		errMsg := fmt.Sprintf("failed waiting for element by %s with value '%s'", by, value)
 		log.Fatalf("Error: %s - %v", errMsg, err)
 	}
 }

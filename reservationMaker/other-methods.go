@@ -30,8 +30,9 @@ func setReservationTime(driver selenium.WebDriver, resTime myconfig.ReservationT
 	webdriver.WaitForElementReady(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL)
 
 	// input the booking date
+	webdriver.PressKey(driver, selenium.BackspaceKey, BOOKING_DATE_BACKSPACE_STROKES)
 	webdriver.ClearAndSendKeys(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL, resTime.Date)
-	webdriver.SendKeys(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL, selenium.TabKey)
+	webdriver.PressKey(driver, selenium.TabKey, 1)
 
 	// input the start time
 	webdriver.ClearAndSendKeys(driver, START_TIME_INPUT_BY, START_TIME_INPUT_VAL, resTime.StartTime)
@@ -42,16 +43,6 @@ func setReservationTime(driver selenium.WebDriver, resTime myconfig.ReservationT
 	// click the search button
 	webdriver.FindAndClickElement(driver, SEARCH_BTN_BY, SEARCH_BTN_VAL)
 }
-
-// Reservation Details, button aria-label="Create a Reservation/Reservation Details"
-// event name id="event-name" - clear & send keys
-// event type id="event-type" - just do nothing if event type is study room
-// organization id="availablegroups" - send keys, downArrow twice,  enter
-// id="1stContactName" - clear & send keys
-// id="1stContactPhone1" - clear & send keys
-// id="1stContactEmail"	- clear & send keys
-// choose who you are id="28" - click, down arrow three times, enter
-// description id="27" - clear & send keys
 
 // add reservation details to the booking
 func addReservationDetails(driver selenium.WebDriver, reservationDetails myconfig.ReservationDetails) {

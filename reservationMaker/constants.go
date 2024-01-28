@@ -50,8 +50,9 @@ const (
 	BOOKING_TYPE_BTN_STUDY_ROOM_VAL   = `//*[@aria-label='Book Now With The "Reserve Spaces | Study Rooms & Open Desk" Template']`
 
 	// reservation time
-	BOOOKING_DATE_INPUT_BY  = selenium.ByID
-	BOOOKING_DATE_INPUT_VAL = "booking-date-input"
+	BOOOKING_DATE_INPUT_BY         = selenium.ByID
+	BOOOKING_DATE_INPUT_VAL        = "booking-date-input"
+	BOOKING_DATE_BACKSPACE_STROKES = 15
 
 	START_TIME_INPUT_BY  = selenium.ByID
 	START_TIME_INPUT_VAL = "start-time-input"

@@ -178,3 +178,11 @@ func SelectFromDropdown(driver selenium.WebDriver, by string, value string, sele
 	ClickElement(optionElem, fmt.Sprintf("option with value '%s' from dropdown with {'%s'='%s'}", selectionValue, by, value))
 
 }
+
+// PressKey presses the given key down & up the specified number of times
+func PressKey(driver selenium.WebDriver, key string, numTimes int) {
+	for i := 0; i < numTimes; i++ {
+		driver.KeyDown(key)
+		driver.KeyUp(key)
+	}
+}

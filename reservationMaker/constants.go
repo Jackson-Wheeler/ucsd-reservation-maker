@@ -57,4 +57,22 @@ const (
 	// room selection
 	ROOM_ITEM_BY  = selenium.ByCSSSelector
 	ROOM_ITEM_VAL = ".room-column.column"
+
+	ROOM_SELECT_BTN_BY  = selenium.ByCSSSelector
+	ROOM_SELECT_BTN_VAL = ".fa-plus-circle"
+
+	SELECTED_ROOM_ITEM_BY  = selenium.ByCSSSelector
+	SELECTED_ROOM_ITEM_VAL = ".selected-room-item"
+
+	NUMBER_OF_ATTENDEES_INPUT_BY  = selenium.ByID
+	NUMBER_OF_ATTENDEES_INPUT_VAL = "setup-add-count"
+
+	ADD_ROOM_BTN_BY  = selenium.ByID
+	ADD_ROOM_BTN_VAL = "setup--add-modal-save"
+
+	ALERT_BY  = selenium.ByCSSSelector
+	ALERT_VAL = ".alert"
+
+	ALERT_MESSAGE_BY  = selenium.ByCSSSelector
+	ALERT_MESSAGE_VAL = ".message"
 )

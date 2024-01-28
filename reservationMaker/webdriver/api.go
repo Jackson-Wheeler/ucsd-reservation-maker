@@ -25,6 +25,15 @@ func FindElement(driver selenium.WebDriver, by string, value string) selenium.We
 	return elem
 }
 
+// FindElementIfExists finds an element by the specified method and value, returns nil if not found
+func FindElementIfExists(driver selenium.WebDriver, by string, value string) selenium.WebElement {
+	elemList := FindElements(driver, by, value)
+	if len(elemList) == 0 {
+		return nil
+	}
+	return elemList[0]
+}
+
 // FindElementFromElement same as myFindElement() but takes an element as an argument
 func FindElementFromElement(element selenium.WebElement, by string, value string) selenium.WebElement {
 	elem, err := element.FindElement(by, value)
@@ -39,7 +48,7 @@ func FindElementFromElement(element selenium.WebElement, by string, value string
 func FindElements(driver selenium.WebDriver, by string, value string) []selenium.WebElement {
 	elems, err := driver.FindElements(by, value)
 	if err != nil {
-		errMsg := fmt.Sprintf("failed to find element by %s with value '%s'", by, value)
+		errMsg := fmt.Sprintf("error when finding elements by %s with value '%s'", by, value)
 		log.Fatalf("Error: %s - %v", errMsg, err)
 	}
 	return elems

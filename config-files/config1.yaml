@@ -42,10 +42,7 @@ room_preference_order:
 
 # -- Reservation Dates & Times --
 reservation_times:
-  - date: 2/6/2024
-    startTime: 11am
-    endTime: 3pm
-  - date: 2/7/2024
+  - date: 2/9/2024
     startTime: 11am
     endTime: 3pm
 # --- End of Reservation Dates & Times ---

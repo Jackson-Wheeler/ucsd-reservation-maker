@@ -10,7 +10,7 @@ import (
 )
 
 func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
-	// initialize the Selenium service & webdriver
+	// initialize the Selenium service & driver
 	service, driver := webdriver.InitializeWebDriver(false)
 	defer service.Stop()
 	fmt.Println()

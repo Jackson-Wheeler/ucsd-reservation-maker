@@ -46,24 +46,18 @@ func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTi
 
 // begin booking: create reservation btn & booking type btn
 func beginBooking(driver selenium.WebDriver, bookingType int) {
-	var by, val string
+	// click the create reservation button
+	webdriver.ClickElement(driver, CREATE_RESERVATION_BTN_BY, CREATE_RESERVATION_BTN_VAL)
 
+	// click the 'book now' button for the specified booking type
 	switch bookingType {
 	case BOOKING_TYPE_STUDENT_ORGS:
-		by = BOOKING_TYPE_BTN_STUDENT_ORGS_BY
-		val = BOOKING_TYPE_BTN_STUDENT_ORGS_VAL
+		webdriver.ClickElement(driver, BOOKING_TYPE_BTN_STUDENT_ORGS_BY, BOOKING_TYPE_BTN_STUDENT_ORGS_VAL)
 	case BOOKING_TYPE_STUDY_ROOM:
-		by = BOOKING_TYPE_BTN_STUDY_ROOM_BY
-		val = BOOKING_TYPE_BTN_STUDY_ROOM_VAL
+		webdriver.ClickElement(driver, BOOKING_TYPE_BTN_STUDY_ROOM_BY, BOOKING_TYPE_BTN_STUDY_ROOM_VAL)
 	default:
 		log.Fatalf("Error: invalid booking type: %d", bookingType)
 	}
-
-	// click the create reservation button
-	webdriver.ClickElement(driver, by, val)
-
-	// click the study room booking button
-	webdriver.ClickElement(driver, by, val)
 }
 
 // set reservation time: booking date, start time, end time, click search

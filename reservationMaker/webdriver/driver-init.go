@@ -1,8 +1,11 @@
-// Package webdriver is a driver for working with Selenium webdriver & service
+// Package webdriver is a package for working with Selenium webdriver & service
 //
 // It provides InitiliazeWebDriver() for initializing a Selenium webdriver
 // service and driver, and api functions for easier interaction with the
 // Selenium webdriver.
+//
+// It is not an actual webdriver itself, but rather a wrapper for working with
+// the Selenium webdriver.
 package webdriver
 
 import (

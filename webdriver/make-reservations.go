@@ -3,14 +3,9 @@ package webdriver
 import (
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
 	"github.com/tebeka/selenium"
-)
-
-const (
-	SITE_URL = "https://reservations.ucsd.edu/EmsWebApp/Default.aspx"
 )
 
 type SiteCredentials struct {
@@ -35,9 +30,6 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
 		createReservation(driver, time, config.RoomPreferenceOrder, config.ReservationDetails)
 	}
 
-	// wait for delay before closing the browser
-	time.Sleep(3 * time.Second)
-
 	// TEMP: keep browser by exiting on error
 	log.Fatal("Done")
 }
@@ -53,25 +45,20 @@ func visitTargetPage(driver selenium.WebDriver) {
 }
 
 func login(driver selenium.WebDriver, siteCredentials SiteCredentials) {
-	const LOGIN_BTN_TEXT = "Login"
-	const USER_ID_INPUT_ID = "userID_input"
-	const PASSWORD_INPUT_ID = "password_input"
-	const SIGN_IN_BTN_ID = "pc_btnLogin"
-
 	fmt.Printf("Logging in as user: '%s'...\n", siteCredentials.Username)
 
 	// click the login button
-	myClickElement(driver, selenium.ByLinkText, LOGIN_BTN_TEXT)
+	myClickElement(driver, LOGIN_BTN_BY, LOGIN_BTN_VAL)
 
 	// switch to new tab
 	myNavToMostRecentTab(driver)
 
 	// enter username
-	mySendKeys(driver, selenium.ByID, USER_ID_INPUT_ID, siteCredentials.Username)
+	mySendKeys(driver, USERNAME_INPUT_BY, USERNAME_INPUT_VAL, siteCredentials.Username)
 
-	// find the password input field by its name
-	mySendKeys(driver, selenium.ByID, PASSWORD_INPUT_ID, siteCredentials.Password)
+	// enter password
+	mySendKeys(driver, PASSWORD_INPUT_BY, PASSWORD_INPUT_VAL, siteCredentials.Password)
 
-	// find the sign in button by its id
-	myClickElement(driver, selenium.ByID, SIGN_IN_BTN_ID)
+	// click sign in button
+	myClickElement(driver, SIGN_IN_BTN_BY, SIGN_IN_BTN_VAL)
 }

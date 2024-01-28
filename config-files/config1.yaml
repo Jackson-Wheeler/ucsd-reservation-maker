@@ -4,6 +4,7 @@
 reservation_details:
   # Number of People
   num_people: 4
+  
   # Event Name
   event_name: Group Study
 

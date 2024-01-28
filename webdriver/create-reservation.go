@@ -1,6 +1,7 @@
 package webdriver
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -11,76 +12,22 @@ import (
 
 // creates a reservation for the specified time given the room preference order and reservation details
 func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTime, roomPreferenceOrder []string, reservationDetails myconfig.ReservationDetails) {
-	const (
-		CREATE_RESERVATION_BTN_TEXT  = "Create A Reservation"
-		STUDY_ROOM_BOOKING_BTN_XPATH = `//*[@aria-label='Book Now With The "Reserve Spaces | Study Rooms & Open Desk" Template']`
-		BOOOKING_DATE_INPUT_ID       = "booking-date-input"
-		START_TIME_INPUT_ID          = "start-time-input"
-		END_TIME_INPUT_ID            = "end-time-input"
-		SEARCH_BTN_XPATH             = `//button[normalize-space()='Search']`
-		ROOM_ITEM_CSS_SELECTOR       = ".room-column.column"
-	)
 
 	fmt.Printf("\nCreating reservation for %s from %s to %s...\n", resTime.Date, resTime.StartTime, resTime.EndTime)
 
-	// click the create reservation button
-	myClickElement(driver, selenium.ByLinkText, CREATE_RESERVATION_BTN_TEXT)
+	// begin booking
+	beginBooking(driver, BOOKING_TYPE_STUDY_ROOM)
 
-	// click the study room booking button
-	myClickElement(driver, selenium.ByXPATH, STUDY_ROOM_BOOKING_BTN_XPATH)
+	// set reservation time
+	setReservationTime(driver, resTime)
 
-	time.Sleep(500 * time.Millisecond) // TODO change to a wait for element ready
-
-	// input the booking date
-	myClearAndSendKeys(driver, selenium.ByID, BOOOKING_DATE_INPUT_ID, resTime.Date)
-	mySendKeys(driver, selenium.ByID, BOOOKING_DATE_INPUT_ID, selenium.TabKey)
-
-	// input the start time
-	myClearAndSendKeys(driver, selenium.ByID, START_TIME_INPUT_ID, resTime.StartTime)
-
-	// input the end time
-	myClearAndSendKeys(driver, selenium.ByID, END_TIME_INPUT_ID, resTime.EndTime)
-
-	// click the search button
-	myClickElement(driver, selenium.ByXPATH, SEARCH_BTN_XPATH)
-
-	time.Sleep(3 * time.Second) // TODO change to a wait for element ready
-
-	// get all room items
-	// TODO get room-column items & save & print their title attribute (make struct for a room)
-	// for each room name in roomPreferenceOrder, find that room:
-	// (above four points -> function returning err, selectRoom() - error describes what went wrong)
-
-	// get all rooms
-	roomItems := myFindElements(driver, selenium.ByCSSSelector, ROOM_ITEM_CSS_SELECTOR)
-
-	// make map of room name to room element (from web page)
-	roomMap := make(map[string]selenium.WebElement)
-	for _, roomItem := range roomItems {
-		title, err1 := roomItem.GetAttribute("title")
-		if err1 != nil {
-			log.Fatal("Error: failed to get room item text - ", err1)
-		}
-		roomMap[title] = roomItem
-	}
-
-	// attempt booking rooms (in order of preference)
-	success := false
-	for _, roomName := range roomPreferenceOrder {
-		err := selectRoom(driver, roomName, roomMap[roomName])
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-		success = true
-		break
-	}
-
-	// if no room available, return
-	if !success {
-		fmt.Printf("*reservation not created - no room available on %s from %s to %s\n", resTime.Date, resTime.StartTime, resTime.EndTime)
+	// select room
+	roomName, err := selectRoom(driver, roomPreferenceOrder, reservationDetails)
+	if err != nil {
+		fmt.Printf("no reservation made for %s from %s to %s - %v\n", resTime.Date, resTime.StartTime, resTime.EndTime, err)
 		return
 	}
+	fmt.Printf("selected room '%s'\n", roomName)
 
 	// Reservation Details, button aria-label="Create a Reservation/Reservation Details"
 	// event name id="event-name" - clear & send keys
@@ -96,13 +43,93 @@ func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTi
 	// confirm reservation was made
 }
 
+// begin booking: create reservation btn & booking type btn
+func beginBooking(driver selenium.WebDriver, bookingType int) {
+	var by, val string
+
+	switch bookingType {
+	case BOOKING_TYPE_STUDENT_ORGS:
+		by = BOOKING_TYPE_BTN_STUDENT_ORGS_BY
+		val = BOOKING_TYPE_BTN_STUDENT_ORGS_VAL
+	case BOOKING_TYPE_STUDY_ROOM:
+		by = BOOKING_TYPE_BTN_STUDY_ROOM_BY
+		val = BOOKING_TYPE_BTN_STUDY_ROOM_VAL
+	default:
+		log.Fatalf("Error: invalid booking type: %d", bookingType)
+	}
+
+	// click the create reservation button
+	myClickElement(driver, by, val)
+
+	// click the study room booking button
+	myClickElement(driver, by, val)
+}
+
+// set reservation time: booking date, start time, end time, click search
+func setReservationTime(driver selenium.WebDriver, resTime myconfig.ReservationTime) {
+	time.Sleep(500 * time.Millisecond) // TODO change to a wait for element ready
+
+	// input the booking date
+	myClearAndSendKeys(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL, resTime.Date)
+	mySendKeys(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL, selenium.TabKey)
+
+	// input the start time
+	myClearAndSendKeys(driver, START_TIME_INPUT_BY, START_TIME_INPUT_VAL, resTime.StartTime)
+
+	// input the end time
+	myClearAndSendKeys(driver, END_TIME_INPUT_BY, END_TIME_INPUT_VAL, resTime.EndTime)
+
+	// click the search button
+	myClickElement(driver, SEARCH_BTN_BY, SEARCH_BTN_VAL)
+}
+
+// select room based on room preference order, returning name of room selected, or error otherwise
+func selectRoom(driver selenium.WebDriver, roomPreferenceOrder []string, reservationDetails myconfig.ReservationDetails) (string, error) {
+	time.Sleep(3 * time.Second) // TODO change to a wait for element ready
+
+	// map room names to web page room elements
+	roomMap := getRoomMap(driver)
+
+	// attempt selecting rooms in order of preference
+	for _, roomName := range roomPreferenceOrder {
+		err := attemptSelectRoom(driver, roomName, roomMap[roomName])
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		// successfully selected room
+		return roomName, nil
+	}
+
+	// if preferred rooms are not available
+	return "", errors.New("preferred rooms are not available")
+
+}
+
+func getRoomMap(driver selenium.WebDriver) map[string]selenium.WebElement {
+	// get all rooms
+	roomItems := myFindElements(driver, ROOM_ITEM_BY, ROOM_ITEM_VAL)
+
+	// make map of room name to room element (from web page)
+	roomMap := make(map[string]selenium.WebElement)
+	for _, roomItem := range roomItems {
+		title, err1 := roomItem.GetAttribute("title")
+		if err1 != nil {
+			log.Fatal("Error: failed to get room item title - ", err1)
+		}
+		roomMap[title] = roomItem
+	}
+
+	return roomMap
+}
+
 // - find the child with class "fa-plus-circle"
 // - click it
 // - if fail, go on to next
 // - else, fill out pop up window & check that selected rooms has a room in it, if not, go on to next, else, break out of loop
 
 // attempts to click to select the given room, returns error if fails
-func selectRoom(driver selenium.WebDriver, roomName string, roomItem selenium.WebElement) error {
+func attemptSelectRoom(driver selenium.WebDriver, roomName string, roomItem selenium.WebElement) error {
 	const (
 		ROOM_SELECT_BTN_CSS_SELECTOR = ".fa-plus-circle"
 		SELECTED_ROOM_CSS_SELECTOR   = ".selected-room-item"

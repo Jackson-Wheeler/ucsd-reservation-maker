@@ -51,9 +51,6 @@ func initializeWebDriver(maximizeWindow bool) (*selenium.Service, selenium.WebDr
 
 // getDriverPath returns the path to the correct chromedriver executable based on the host OS & Architecutre
 func getDriverPath() (string, error) {
-	const DRIVER_DIR = "drivers"
-	const DRIVER_TYPE_DIR_PREFIX = "chromedriver-"
-	const DRIVER_NAME = "chromedriver"
 	var driverType string
 
 	switch runtime.GOOS {

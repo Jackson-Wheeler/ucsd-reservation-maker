@@ -1,5 +1,5 @@
 .DS_Store
-.env
+.dev-build/.env
 
 # Binaries for programs and plugins
 *.exe

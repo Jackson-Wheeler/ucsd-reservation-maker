@@ -11,6 +11,11 @@ type SiteCredentials struct {
 
 /* constants */
 const (
+	/* -- WEB DRIVER INIT -- */
+	DRIVER_DIR             = "driver"
+	DRIVER_NAME            = "chromedriver"
+	MAXIMIZE_DRIVER_WINDOW = true
+
 	/* -- WEB PAGE GENERAL -- */
 	SITE_URL = "https://reservations.ucsd.edu/EmsWebApp/Default.aspx"
 

@@ -12,12 +12,18 @@ import (
 // MakeReservations makes the reservations on reservations.ucsd.edu according to the given config, using the given site credentials to login
 func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
 	// initialize the Selenium service & driver
-	service, driver := webdriver.InitializeWebDriver(true)
+	service, driver := webdriver.InitializeWebDriver(DRIVER_DIR, DRIVER_NAME, MAXIMIZE_DRIVER_WINDOW)
 	defer service.Stop()
 	fmt.Println()
 
 	// visit the target page
 	visitTargetPage(driver)
+
+	// TEMP: for debugging
+	// --------------------
+	service.Stop()
+	log.Fatal("Done")
+	// --------------------
 
 	// login
 	login(driver, siteCredentials)

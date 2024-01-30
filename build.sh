@@ -32,19 +32,19 @@ GOOS=darwin GOARCH=amd64 go build -o $BUILD_DIR/$MAC_64_DIR/$PROGRAM_NAME
 
 # Build for Windows x64
 echo "Building for Windows x64..."
-GOOS=windows GOARCH=amd64 go build -o $BUILD_DIR/$WIN_64_DIR/$PROGRAM_NAME
+GOOS=windows GOARCH=amd64 go build -o $BUILD_DIR/$WIN_64_DIR/$PROGRAM_NAME.exe
 
 
 # -- Copy over files: config templates, .env template, instructions --
 TEMPLATES_DIR=templates
 
-CONFIG_TEMPLATES_DIR=$TEMPLATES_DIR/config
+CONFIG_DIR=config
 DEST_CONFIG_DIR=config
 
-ENV_FILE=$TEMPLATES_DIR/.env
+ENV_FILE=.env
 
-INSTRUCTIONS=README.md
-DEST_INSTRUCTIONS=INSTRUCTIONS.md
+INSTRUCTIONS=INSTRUCTIONS.md
+INSTRUCTIONS_HTML=INSTRUCTIONS.html
 
 echo -e "\n-- Copying Files --"
 for DEST in ${PLATFORM_DIRS[@]}; do
@@ -52,14 +52,13 @@ for DEST in ${PLATFORM_DIRS[@]}; do
 
   # Copy over config templates
   rm -rf $BUILD_DIR/$DEST/$DEST_CONFIG_DIR # clear out old config
-  cp -r $CONFIG_TEMPLATES_DIR $BUILD_DIR/$DEST/
+  cp -r $TEMPLATES_DIR/$CONFIG_DIR $BUILD_DIR/$DEST/
 
   # Copy over .env file
-  cp $ENV_FILE $BUILD_DIR/$DEST/
+  cp $TEMPLATES_DIR/$ENV_FILE $BUILD_DIR/$DEST/
 
   # Copy over new instructions
-  cp $INSTRUCTIONS $BUILD_DIR/$DEST/
-  mv $BUILD_DIR/$DEST/$INSTRUCTIONS $BUILD_DIR/$DEST/$DEST_INSTRUCTIONS # rename
+  pandoc $TEMPLATES_DIR/$INSTRUCTIONS -o $BUILD_DIR/$DEST/$INSTRUCTIONS_HTML # convert md file to html
 done
 
 # -- Create zip files --

@@ -72,9 +72,9 @@ rm -rf $DIST_DIR/*
 
 # Create zip files for each platform
 for DEST in ${PLATFORM_DIRS[@]}; do
-  echo "Creating zip file for $DEST_NAME..."
-  zip -q -r $DEST_NAME.zip $DEST
-  mv $DEST_NAME.zip $DIST_DIR/
+  echo "Creating zip file for $DEST..."
+  zip -q -r $DEST.zip $DEST
+  mv $DEST.zip $DIST_DIR/
 done
 
 

@@ -44,7 +44,7 @@ DEST_CONFIG_DIR=config
 ENV_FILE=.env
 
 INSTRUCTIONS=INSTRUCTIONS.md
-INSTRUCTIONS_HTML=INSTRUCTIONS.html
+INSTRUCTIONS_PDF=INSTRUCTIONS.pdf
 
 echo -e "\n-- Copying Files --"
 for DEST in ${PLATFORM_DIRS[@]}; do
@@ -58,7 +58,8 @@ for DEST in ${PLATFORM_DIRS[@]}; do
   cp $TEMPLATES_DIR/$ENV_FILE $BUILD_DIR/$DEST/
 
   # Copy over new instructions
-  pandoc $TEMPLATES_DIR/$INSTRUCTIONS -o $BUILD_DIR/$DEST/$INSTRUCTIONS_HTML # convert md file to html
+  # pandoc -f markdown -t pdf $TEMPLATES_DIR/$INSTRUCTIONS -o $BUILD_DIR/$DEST/$INSTRUCTIONS_PDF # convert md file to html
+  cp $TEMPLATES_DIR/$INSTRUCTIONS $BUILD_DIR/$DEST/$INSTRUCTIONS # simply copy over md file
 done
 
 # -- Create zip files --

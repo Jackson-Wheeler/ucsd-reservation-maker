@@ -19,12 +19,6 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
 	// visit the target page
 	visitTargetPage(driver)
 
-	// TEMP: for debugging
-	// --------------------
-	service.Stop()
-	log.Fatal("Done")
-	// --------------------
-
 	// login
 	login(driver, siteCredentials)
 

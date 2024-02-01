@@ -29,9 +29,6 @@ func main() {
 	fmt.Printf("Reading configuration details from: '%s'\n", configFilePath)
 	config := myconfig.ParseConfigFile(configFilePath)
 
-	// TEMP
-	log.Fatalf("Done")
-
 	// read environment variables
 	siteCredentials := readEnvVariables()
 

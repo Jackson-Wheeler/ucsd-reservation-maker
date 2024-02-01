@@ -47,10 +47,11 @@ func ParseConfigFile(configFilePath string) (Config, error) {
 	}
 
 	// Print the parsed information
-	// TODO: remove this
+	fmt.Println("--- Configuration Details ---")
 	fmt.Printf("Reservation Details:\n%+v\n\n", config.ReservationDetails)
 	fmt.Printf("Room Preference Order:\n%+v\n\n", config.RoomPreferenceOrder)
-	fmt.Printf("Reservation Times:\n%+v\n\n", config.ReservationTimes)
+	fmt.Printf("Reservation Times:\n%+v\n", config.ReservationTimes)
+	fmt.Printf("--- End: Configuration Details ---\n\n")
 
 	return config, nil
 }

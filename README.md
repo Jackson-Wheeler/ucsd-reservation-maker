@@ -1,2 +1,2 @@
-# ucsd-reservation-maker
-Utilizes Selenium to make UCSD room reservations on the browser as defined by configuration files
+# UCSD Reservation Maker
+See https://github.com/Jackson-Wheeler/ucsd-reservation-maker/wiki

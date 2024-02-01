@@ -17,7 +17,6 @@ type Config struct {
 type ReservationDetails struct {
 	NumPeople    int    `yaml:"num_people"`
 	EventName    string `yaml:"event_name"`
-	EventType    string `yaml:"event_type"`
 	ContactName  string `yaml:"contact_name"`
 	ContactPhone string `yaml:"contact_phone"`
 	ContactEmail string `yaml:"contact_email"`

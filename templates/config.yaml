@@ -59,8 +59,8 @@ room_preference_order:
 # Multiple dates and times are allowed.
 #
 # notes:
-# - UCSD policy maximum of 4 hours of reservation on any given day
-reservation_times:
+# - UCSD policy maximum of 4 hours of reservation on any given day &
+# only 1 reservation per dayreservation_times:
   - date: 2/9/2024
     startTime: 11am
     endTime: 3pm

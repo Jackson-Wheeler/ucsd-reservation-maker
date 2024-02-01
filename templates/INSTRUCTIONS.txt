@@ -1,2 +1,2 @@
-Set Up Instructions: https://github.com/Jackson-Wheeler/ucsd-reservation-maker/wiki/INSTRUCTIONS-%E2%80%90-SET-UP
-Use Instructions: https://github.com/Jackson-Wheeler/ucsd-reservation-maker/wiki/INSTRUCTIONS-%E2%80%90-How-to-Use
+INSTRUCTIONS - Allow Permissions: https://github.com/Jackson-Wheeler/ucsd-reservation-maker/wiki/INSTRUCTIONS-%E2%80%90-Allow-Permissions
+INSTRUCTIONS - How to Use: https://github.com/Jackson-Wheeler/ucsd-reservation-maker/wiki/INSTRUCTIONS-%E2%80%90-How-to-Use

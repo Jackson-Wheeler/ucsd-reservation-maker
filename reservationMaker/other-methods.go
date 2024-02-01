@@ -59,10 +59,7 @@ func addReservationDetails(driver selenium.WebDriver, reservationDetails myconfi
 	// input the event name
 	webdriver.ClearAndSendKeys(driver, EVENT_NAME_INPUT_BY, EVENT_NAME_INPUT_VAL, reservationDetails.EventName)
 
-	// event type - do nothing if event type is study room
-	if reservationDetails.EventType != EVENT_TYPE_STUDY_ROOM {
-		log.Fatalf("Error: invalid event type: '%s' - only '%s' is supported at this time", reservationDetails.EventType, EVENT_TYPE_STUDY_ROOM)
-	}
+	// do nothing -> event type = study room
 
 	// select organization - only ORGANIZATION_GROUP_STUDY_OPT_VAL is supported at this time
 	webdriver.SelectFromDropdown(driver, ORGANIZATION_INPUT_BY, ORGANIZATION_INPUT_VAL, ORGANIZATION_GROUP_STUDY_OPT_VAL)

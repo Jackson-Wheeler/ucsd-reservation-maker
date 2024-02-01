@@ -11,25 +11,23 @@ import (
 )
 
 const (
-	WELCOME_MESSAGE = "Welcome to the UCSD Reservation maker!\n"
+	WELCOME_MESSAGE     = "Welcome to the UCSD Reservation maker!\n"
+	DEFAULT_CONFIG_FILE = "config.yaml"
 )
+
+// ARGUMENTS: [configFilePath], where configFilePath = DEFAULT_CONFIG_FILE by default
 
 func main() {
 	// introductory message
 	fmt.Printf("\n%s\n", WELCOME_MESSAGE)
 
-	// parse command line arguments
-	if len(os.Args) < 2 {
-		log.Fatal("Error: please provide a configuration file path\nusage: ./ucsd-reservation-maker <config file path>")
-	}
-
 	// read configuration file
-	configFilePath := os.Args[1]
-	fmt.Printf("reading configuration details from: %s\n", configFilePath)
-	config, err := myconfig.ParseConfigFile(configFilePath)
-	if err != nil {
-		log.Fatal("Error: failed to parse configuration file:", err)
+	configFilePath := DEFAULT_CONFIG_FILE
+	if len(os.Args) >= 2 {
+		configFilePath = os.Args[1]
 	}
+	fmt.Printf("Reading configuration details from: '%s'\n", configFilePath)
+	config := myconfig.ParseConfigFile(configFilePath)
 
 	// read environment variables
 	siteCredentials := readEnvVariables()

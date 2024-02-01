@@ -1,29 +1,50 @@
+# -----------------------------------------
 # Configuration file for defining reservations
+# -----------------------------------------
+
+# Fill in the details below according to the reservations you 
+# would like to make. The reservation details and room 
+# preference order will be applied to each reservation time.
+
+# NOTE: some example values have been provided. You are welcome
+# to change these to be as you desire. Please be sure to fill
+# in all the fields with the correct information before running
+# the program.
+
+# NOTE: at this time ONLY bookings of type "Study Rooms & Open Desk"
+# are supported. Student Org bookings are slightly different.
 
 # -- Reservation Details --
 reservation_details:
-  # Number of People
+  # Number of People 
+  # notes: for PC study room minimum is 1 and max is 4
   num_people: 4
   
   # Event Name
   event_name: Jesus Lovers :)
 
   # 1st Contact Name
-  contact_name: 
+  contact_name:
 
   # 1st Contact Phone Number 
-  contact_phone: 
+  contact_phone:
 
   # 1st Contact Email
-  contact_email: 
+  contact_email:
 
   # Description of Event
-  description: Group Study 
+  description: Group Study
 # --- End of Reservation Details ---
 
 
 # -- Room Preference Order --
-# Note: write name exactly as it appears on the reservation page
+# List the rooms you desire in order of preference. The program will
+# book the first available one.
+#
+# notes: 
+# - write full name of room exactly as it appears on the reservation page
+# (e.g. "Price Center Study Room 0", "Port of Long Beach | Coworking Corner")
+# - only PC study rooms & the Port of Long Beach room are currently supported 
 room_preference_order:
   - Price Center Study Room 0
   - Price Center Study Room 4
@@ -34,7 +55,12 @@ room_preference_order:
 
 
 # -- Reservation Dates & Times --
-reservation_times:
+# List the dates and times you would like to reserve the room for. 
+# Multiple dates and times are allowed.
+#
+# notes:
+# - UCSD policy maximum of 4 hours of reservation on any given day &
+# only 1 reservation per dayreservation_times:
   - date: 2/9/2024
     startTime: 11am
     endTime: 3pm

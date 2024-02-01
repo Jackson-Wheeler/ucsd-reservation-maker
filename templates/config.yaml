@@ -1,0 +1,47 @@
+# Configuration file for defining reservations
+
+# -- Reservation Details --
+reservation_details:
+  # Number of People
+  num_people: 4
+  
+  # Event Name
+  event_name: Jesus Lovers :)
+
+  # 1st Contact Name
+  contact_name: 
+
+  # 1st Contact Phone Number 
+  contact_phone: 
+
+  # 1st Contact Email
+  contact_email: 
+
+  # Description of Event
+  description: Group Study 
+# --- End of Reservation Details ---
+
+
+# -- Room Preference Order --
+# Note: write name exactly as it appears on the reservation page
+room_preference_order:
+  - Price Center Study Room 0
+  - Price Center Study Room 4
+  - Price Center Study Room 5
+  - Price Center Study Room 6
+  - Price Center Study Room 7
+# --- End of Room Preference Order ---
+
+
+# -- Reservation Dates & Times --
+reservation_times:
+  - date: 2/9/2024
+    startTime: 11am
+    endTime: 3pm
+  - date: 2/10/2024
+    startTime: 11am
+    endTime: 3pm
+  - date: 2/11/2024
+    startTime: 11am
+    endTime: 3pm
+# --- End of Reservation Dates & Times ---

@@ -1,0 +1,19 @@
+.DS_Store
+
+# Development
+.dev/
+
+# Output files (not including .zips)
+
+
+
+# Go specific
+*.test
+*.prof
+
+# Dependency directories
+/vendor/
+/go.sum
+
+# IDE files
+.vscode/

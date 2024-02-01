@@ -27,10 +27,10 @@ func main() {
 		configFilePath = os.Args[1]
 	}
 	fmt.Printf("Reading configuration details from: '%s'\n", configFilePath)
-	config, err := myconfig.ParseConfigFile(configFilePath)
-	if err != nil {
-		log.Fatal("Error: failed to parse configuration file:", err)
-	}
+	config := myconfig.ParseConfigFile(configFilePath)
+
+	// TEMP
+	log.Fatalf("Done")
 
 	// read environment variables
 	siteCredentials := readEnvVariables()

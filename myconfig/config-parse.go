@@ -2,6 +2,7 @@ package myconfig
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -30,19 +31,25 @@ type ReservationTime struct {
 }
 
 // Parse Configuration File
-func ParseConfigFile(configFilePath string) (Config, error) {
+func ParseConfigFile(configFilePath string) Config {
 	var config Config
 
 	// Read the YAML file
 	yamlFile, err := os.ReadFile(configFilePath)
 	if err != nil {
-		return config, fmt.Errorf("failed to read YAML file: %v", err)
+		log.Fatalf("Error: failed to read configuration file: %v", err)
 	}
 
 	// Parse the YAML file into the Config struct
 	err = yaml.Unmarshal(yamlFile, &config)
 	if err != nil {
-		return config, fmt.Errorf("failed to parse YAML: %v", err)
+		log.Fatalf("Error: failed to parse configuration file: %v", err)
+	}
+
+	// Validate the parsed information
+	err = validateConfig(config)
+	if err != nil {
+		log.Fatalf("Error: invalid configuration file: %v", err)
 	}
 
 	// Print the parsed information
@@ -52,5 +59,51 @@ func ParseConfigFile(configFilePath string) (Config, error) {
 	fmt.Printf("Reservation Times:\n%+v\n", config.ReservationTimes)
 	fmt.Printf("--- End: Configuration Details ---\n\n")
 
-	return config, nil
+	return config
+}
+
+// Validate the parsed configuration. Return error if invalid
+func validateConfig(config Config) error {
+	// Validate the ReservationDetails
+	if config.ReservationDetails.NumPeople <= 0 {
+		return fmt.Errorf("num_people must be greater than 0")
+	}
+	if config.ReservationDetails.EventName == "" {
+		return fmt.Errorf("event_name must be non-empty")
+	}
+	if config.ReservationDetails.ContactName == "" {
+		return fmt.Errorf("contact_name must be non-empty")
+	}
+	if config.ReservationDetails.ContactPhone == "" {
+		return fmt.Errorf("contact_phone must be non-empty")
+	}
+	if config.ReservationDetails.ContactEmail == "" {
+		return fmt.Errorf("contact_email must be non-empty")
+	}
+	if config.ReservationDetails.Description == "" {
+		return fmt.Errorf("description must be non-empty")
+	}
+
+	// Validate the RoomPreferenceOrder
+	if len(config.RoomPreferenceOrder) == 0 {
+		return fmt.Errorf("room_preference_order must be non-empty")
+	}
+
+	// Validate the ReservationTimes
+	if len(config.ReservationTimes) == 0 {
+		return fmt.Errorf("reservation_times must be non-empty")
+	}
+	for _, reservationTime := range config.ReservationTimes {
+		if reservationTime.Date == "" {
+			return fmt.Errorf("reservation_times date must be non-empty")
+		}
+		if reservationTime.StartTime == "" {
+			return fmt.Errorf("reservation_times startTime must be non-empty")
+		}
+		if reservationTime.EndTime == "" {
+			return fmt.Errorf("reservation_times endTime must be non-empty")
+		}
+	}
+
+	return nil
 }

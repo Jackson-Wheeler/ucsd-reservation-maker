@@ -30,6 +30,9 @@ for ((i=0; i<${#PLATFORMS[@]}; i++)); do
 
   # build binary
   echo "building binary..."
+  if [ "${GOOS[$i]}" = "windows" ]; then
+    BINARY_NAME="$BINARY_NAME.exe"
+  fi
   GOOS=${GOOS[$i]} GOARCH=${ARCH[$i]} go build -o $BUILD_DIR/$PLATFORM/$PROJECT_NAME/$BINARY_NAME
 
   # copy over corresponding chromedriver

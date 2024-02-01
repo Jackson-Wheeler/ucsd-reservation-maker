@@ -11,4 +11,4 @@ echo "dev: building for MacOs x64..."
 GOOS=darwin GOARCH=amd64 go build -o $DEV_DIR/$PROGRAM_NAME
 
 echo "dev: running program..."
-cd $DEV_DIR; ./$PROGRAM_NAME
+cd $DEV_DIR; ./$PROGRAM_NAME $1

@@ -32,9 +32,10 @@ func beginBooking(driver selenium.WebDriver, bookingType int) {
 func setReservationTime(driver selenium.WebDriver, resTime myconfig.ReservationTime) {
 	// wait for content to load
 	webdriver.WaitForElementReady(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL)
+	time.Sleep(500 * time.Millisecond)
 
 	// input the booking date
-	webdriver.PressKey(driver, selenium.BackspaceKey, BOOKING_DATE_BACKSPACE_STROKES)
+	//webdriver.PressKey(driver, selenium.BackspaceKey, BOOKING_DATE_BACKSPACE_STROKES)
 	webdriver.ClearAndSendKeys(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL, resTime.Date)
 	webdriver.PressKey(driver, selenium.TabKey, 1)
 

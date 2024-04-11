@@ -78,33 +78,3 @@ func readEnvVariables() (*reservationMaker.SiteCredentials, error) {
 	}
 	return &reservationMaker.SiteCredentials{Username: username, Password: password}, nil
 }
-
-// TEMP
-// fmt.Println("Start")
-// pw, err := playwright.Run()
-// if err != nil {
-// 	log.Fatalf("could not start Playwright: %v", err)
-// }
-
-// // install browser and OS dependencies
-// err = playwright.Install()
-// if err != nil {
-// 	log.Fatalf("could not install Playwright: %v", err)
-// }
-
-// browserConfig := playwright.BrowserTypeLaunchOptions{
-// 	Headless: playwright.Bool(false),
-// }
-// browser, err := pw.Chromium.Launch(browserConfig)
-// if err != nil {
-// 	log.Fatalf("could not launch browser: %v", err)
-// }
-// page, err := browser.NewPage()
-// if err != nil {
-// 	log.Fatalf("could not create page: %v", err)
-// }
-// if _, err = page.Goto("https://www.google.com"); err != nil {
-// 	log.Fatalf("could not goto: %v", err)
-// }
-// time.Sleep(5 * time.Second)
-// fmt.Println("End")

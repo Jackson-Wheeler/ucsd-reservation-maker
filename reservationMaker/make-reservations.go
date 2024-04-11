@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
+	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/myplaywright"
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/webdriver"
 	"github.com/tebeka/selenium"
 )
@@ -13,23 +14,27 @@ import (
 //
 // openFlag: if true, instead of making reservations, program will only open the reservations page (navigates to the date and time of the first reservation in the config file). Purpose: for viewing what dates and times are available.
 func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, openFlag bool) error {
-	// initialize the Selenium service & driver
-	service, driver := webdriver.InitializeWebDriver(DRIVER_DIR, DRIVER_NAME, MAXIMIZE_DRIVER_WINDOW)
-	defer service.Stop()
-	fmt.Println()
-
-	// visit the target page
-	visitTargetPage(driver)
-
-	// login
-	login(driver, siteCredentials)
-
-	// create each reservation
-	for _, time := range config.ReservationTimes {
-		createReservation(driver, time, config.RoomPreferenceOrder, config.ReservationDetails)
+	// start Playwright
+	pw := &myplaywright.MyPlaywright{}
+	err := pw.Initialize(false)
+	if err != nil {
+		return fmt.Errorf("error initializing Playwright (automated browser controlling software): %v", err)
 	}
+	defer pw.Close()
 
-	fmt.Println("\nDone - see above for log of created reservations")
+	// // visit the target page
+	// visitTargetPage(driver)
+
+	// // login
+	// login(driver, siteCredentials)
+
+	// // create each reservation
+	// for _, time := range config.ReservationTimes {
+	// 	createReservation(driver, time, config.RoomPreferenceOrder, config.ReservationDetails)
+	// }
+
+	// // finish up
+	// fmt.Println("\nDone - see above for log of created reservations")
 
 	return nil
 }

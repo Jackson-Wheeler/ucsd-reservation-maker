@@ -9,8 +9,10 @@ import (
 	"github.com/tebeka/selenium"
 )
 
-// MakeReservations makes the reservations on reservations.ucsd.edu according to the given config, using the given site credentials to login
-func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
+// MakeReservations makes the reservations on reservations.ucsd.edu according to the given config, using the given site credentials to login.
+//
+// openFlag: if true, instead of making reservations, program will only open the reservations page (navigates to the date and time of the first reservation in the config file). Purpose: for viewing what dates and times are available.
+func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, openFlag bool) error {
 	// initialize the Selenium service & driver
 	service, driver := webdriver.InitializeWebDriver(DRIVER_DIR, DRIVER_NAME, MAXIMIZE_DRIVER_WINDOW)
 	defer service.Stop()
@@ -28,6 +30,8 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials) {
 	}
 
 	fmt.Println("\nDone - see above for log of created reservations")
+
+	return nil
 }
 
 func visitTargetPage(driver selenium.WebDriver) {

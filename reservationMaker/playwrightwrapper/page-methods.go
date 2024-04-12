@@ -43,12 +43,12 @@ value: the value to search for
 func (pw *PlaywrightWrapper) FindElemAndClick(method string, value string) error {
 	elem, err := pw.FindElement(method, value)
 	if err != nil {
-		return fmt.Errorf("could not find element: %v", err)
+		return fmt.Errorf("error finding element: %v", err)
 	}
 
 	err = elem.Click()
 	if err != nil {
-		return fmt.Errorf("could not click element: %v", err)
+		return fmt.Errorf("error clicking element: %v", err)
 	}
 
 	return nil
@@ -64,12 +64,27 @@ value: the value to search for
 func (pw *PlaywrightWrapper) FindElemAndSendKeys(method string, value string, keys string) error {
 	elem, err := pw.FindElement(method, value)
 	if err != nil {
-		return fmt.Errorf("could not find element: %v", err)
+		return fmt.Errorf("error finding element: %v", err)
+	}
+
+	trueVal := true
+	err = elem.Clear(playwright.LocatorClearOptions{Force: &trueVal})
+	if err != nil {
+		return fmt.Errorf("error clearing element: %v", err)
 	}
 
 	err = elem.PressSequentially(keys)
 	if err != nil {
-		return fmt.Errorf("could not send keys: %v", err)
+		return fmt.Errorf("error sending keys: %v", err)
+	}
+
+	return nil
+}
+
+func (pw *PlaywrightWrapper) PressKey(keyName string) error {
+	err := pw.CurrPage.Keyboard().Press(keyName)
+	if err != nil {
+		return fmt.Errorf("error pressing key '%s': %v", keyName, err)
 	}
 
 	return nil

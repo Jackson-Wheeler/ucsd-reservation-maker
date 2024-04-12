@@ -58,18 +58,18 @@ const (
 	BOOKING_TYPE_BTN_STUDY_ROOM_VAL   = `//*[@aria-label='Book Now With The "Reserve Spaces | Study Rooms & Open Desk" Template']`
 
 	// reservation time
-	BOOOKING_DATE_INPUT_BY         = selenium.ByID
-	BOOOKING_DATE_INPUT_VAL        = "booking-date-input"
-	BOOKING_DATE_BACKSPACE_STROKES = 15
+	BOOKING_DATE_INPUT_BY  = playwrightwrapper.ByLocator
+	BOOKING_DATE_INPUT_VAL = "#booking-date-input"
+	//BOOKING_DATE_BACKSPACE_STROKES = 15
 
-	START_TIME_INPUT_BY  = selenium.ByID
-	START_TIME_INPUT_VAL = "start-time-input"
+	START_TIME_INPUT_BY  = playwrightwrapper.ByLocator
+	START_TIME_INPUT_VAL = "#start-time-input"
 
-	END_TIME_INPUT_BY  = selenium.ByID
-	END_TIME_INPUT_VAL = "end-time-input"
+	END_TIME_INPUT_BY  = playwrightwrapper.ByLocator
+	END_TIME_INPUT_VAL = "#end-time-input"
 
-	SEARCH_BTN_BY  = selenium.ByXPATH
-	SEARCH_BTN_VAL = `//button[normalize-space()='Search']`
+	SEARCH_BTN_BY  = playwrightwrapper.ByLocator
+	SEARCH_BTN_VAL = "#date-time-collapse .btn-filter-search"
 
 	// room selection
 	ROOM_ITEM_BY  = selenium.ByCSSSelector

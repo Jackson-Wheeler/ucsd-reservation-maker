@@ -41,7 +41,7 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, o
 	}
 
 	// finish up
-	time.Sleep(5 * time.Second) // TEMP
+	time.Sleep(10 * time.Second) // TEMP
 	fmt.Println("\nDone - see above for log of created reservations")
 
 	return nil
@@ -103,10 +103,16 @@ func createReservation(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfig
 	fmt.Printf("\nCreating reservation for %s from %s to %s...\n", resTime.Date, resTime.StartTime, resTime.EndTime)
 
 	// begin booking
-	beginBooking(pw, BOOKING_TYPE_STUDY_ROOM)
+	err := beginBooking(pw, BOOKING_TYPE_STUDY_ROOM)
+	if err != nil {
+		return fmt.Errorf("error beginning booking: %v", err)
+	}
 
 	// set reservation time
-	// setReservationTime(driver, resTime)
+	err = setReservationTime(pw, resTime)
+	if err != nil {
+		return fmt.Errorf("error setting reservation time: %v", err)
+	}
 
 	// // select room
 	// roomName, err := selectRoom(driver, roomPreferenceOrder, reservationDetails)

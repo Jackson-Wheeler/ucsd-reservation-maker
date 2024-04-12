@@ -1,7 +1,7 @@
 package reservationMaker
 
 import (
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
@@ -11,40 +11,65 @@ import (
 )
 
 // begin booking: create reservation btn & booking type btn
-func beginBooking(pw *playwrightwrapper.PlaywrightWrapper, bookingType int) {
+func beginBooking(pw *playwrightwrapper.PlaywrightWrapper, bookingType int) error {
 	// click the create reservation button
-	pw.FindElemAndClick(CREATE_RESERVATION_BTN_BY, CREATE_RESERVATION_BTN_VAL)
+	err := pw.FindElemAndClick(CREATE_RESERVATION_BTN_BY, CREATE_RESERVATION_BTN_VAL)
+	if err != nil {
+		return fmt.Errorf("error clicking create reservation button: %v", err)
+	}
 
 	// click the 'book now' button for the specified booking type
 	switch bookingType {
 	case BOOKING_TYPE_STUDENT_ORGS:
-		pw.FindElemAndClick(BOOKING_TYPE_BTN_STUDENT_ORGS_BY, BOOKING_TYPE_BTN_STUDENT_ORGS_VAL)
+		err = pw.FindElemAndClick(BOOKING_TYPE_BTN_STUDENT_ORGS_BY, BOOKING_TYPE_BTN_STUDENT_ORGS_VAL)
+		if err != nil {
+			return fmt.Errorf("error clicking student org booking button: %v", err)
+		}
 	case BOOKING_TYPE_STUDY_ROOM:
-		pw.FindElemAndClick(BOOKING_TYPE_BTN_STUDY_ROOM_BY, BOOKING_TYPE_BTN_STUDY_ROOM_VAL)
+		err = pw.FindElemAndClick(BOOKING_TYPE_BTN_STUDY_ROOM_BY, BOOKING_TYPE_BTN_STUDY_ROOM_VAL)
+		if err != nil {
+			return fmt.Errorf("error clicking study room booking button: %v", err)
+		}
 	default:
-		log.Fatalf("Error: invalid booking type: %d", bookingType)
+		return fmt.Errorf("invalid booking type: %d", bookingType)
 	}
+	return nil
 }
 
 // set reservation time: booking date, start time, end time, click search
-func setReservationTime(driver selenium.WebDriver, resTime myconfig.ReservationTime) {
+func setReservationTime(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfig.ReservationTime) error {
 	// wait for content to load
-	webdriver.WaitForElementReady(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL)
 	time.Sleep(500 * time.Millisecond)
 
 	// input the booking date
-	//webdriver.PressKey(driver, selenium.BackspaceKey, BOOKING_DATE_BACKSPACE_STROKES)
-	webdriver.ClearAndSendKeys(driver, BOOOKING_DATE_INPUT_BY, BOOOKING_DATE_INPUT_VAL, resTime.Date)
-	webdriver.PressKey(driver, selenium.TabKey, 1)
+	err := pw.FindElemAndSendKeys(BOOKING_DATE_INPUT_BY, BOOKING_DATE_INPUT_VAL, resTime.Date)
+	if err != nil {
+		return fmt.Errorf("error inputting booking date: %v", err)
+	}
+	err = pw.PressKey("Tab")
+	if err != nil {
+		return fmt.Errorf("error pressing tab key: %v", err)
+	}
 
 	// input the start time
-	webdriver.ClearAndSendKeys(driver, START_TIME_INPUT_BY, START_TIME_INPUT_VAL, resTime.StartTime)
+	err = pw.FindElemAndSendKeys(START_TIME_INPUT_BY, START_TIME_INPUT_VAL, resTime.StartTime)
+	if err != nil {
+		return fmt.Errorf("error inputting start time: %v", err)
+	}
 
 	// input the end time
-	webdriver.ClearAndSendKeys(driver, END_TIME_INPUT_BY, END_TIME_INPUT_VAL, resTime.EndTime)
+	err = pw.FindElemAndSendKeys(END_TIME_INPUT_BY, END_TIME_INPUT_VAL, resTime.EndTime)
+	if err != nil {
+		return fmt.Errorf("error inputting end time: %v", err)
+	}
 
 	// click the search button
-	webdriver.FindAndClickElement(driver, SEARCH_BTN_BY, SEARCH_BTN_VAL)
+	err = pw.FindElemAndClick(SEARCH_BTN_BY, SEARCH_BTN_VAL)
+	if err != nil {
+		return fmt.Errorf("error clicking search button: %v", err)
+	}
+
+	return nil
 }
 
 // add reservation details to the booking

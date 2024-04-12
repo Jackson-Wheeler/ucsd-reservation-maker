@@ -5,24 +5,22 @@ import (
 	"time"
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
+	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/playwrightwrapper"
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/webdriver"
 	"github.com/tebeka/selenium"
 )
 
 // begin booking: create reservation btn & booking type btn
-func beginBooking(driver selenium.WebDriver, bookingType int) {
-	// wait for content to load
-	webdriver.FindAndClickElement(driver, CREATE_RESERVATION_BTN_BY, CREATE_RESERVATION_BTN_VAL)
-
+func beginBooking(pw *playwrightwrapper.PlaywrightWrapper, bookingType int) {
 	// click the create reservation button
-	webdriver.FindAndClickElement(driver, CREATE_RESERVATION_BTN_BY, CREATE_RESERVATION_BTN_VAL)
+	pw.FindElemAndClick(CREATE_RESERVATION_BTN_BY, CREATE_RESERVATION_BTN_VAL)
 
 	// click the 'book now' button for the specified booking type
 	switch bookingType {
 	case BOOKING_TYPE_STUDENT_ORGS:
-		webdriver.FindAndClickElement(driver, BOOKING_TYPE_BTN_STUDENT_ORGS_BY, BOOKING_TYPE_BTN_STUDENT_ORGS_VAL)
+		pw.FindElemAndClick(BOOKING_TYPE_BTN_STUDENT_ORGS_BY, BOOKING_TYPE_BTN_STUDENT_ORGS_VAL)
 	case BOOKING_TYPE_STUDY_ROOM:
-		webdriver.FindAndClickElement(driver, BOOKING_TYPE_BTN_STUDY_ROOM_BY, BOOKING_TYPE_BTN_STUDY_ROOM_VAL)
+		pw.FindElemAndClick(BOOKING_TYPE_BTN_STUDY_ROOM_BY, BOOKING_TYPE_BTN_STUDY_ROOM_VAL)
 	default:
 		log.Fatalf("Error: invalid booking type: %d", bookingType)
 	}

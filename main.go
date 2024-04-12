@@ -47,7 +47,7 @@ func main() {
 	// make reservation / open reservations page
 	err = reservationMaker.MakeReservations(*config, *siteCredentials, openFlag)
 	if err != nil {
-		log.Fatalf("Error making reservation: %v\n", err)
+		log.Fatalf("Error making reservations: %v\n", err)
 	}
 }
 

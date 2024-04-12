@@ -38,23 +38,23 @@ const (
 	LOGIN_BTN_BY  = playwrightwrapper.ByText
 	LOGIN_BTN_VAL = "Login"
 
-	USERNAME_INPUT_BY  = playwrightwrapper.ByCSSSelector
+	USERNAME_INPUT_BY  = playwrightwrapper.ByLocator
 	USERNAME_INPUT_VAL = "#userID_input"
 
-	PASSWORD_INPUT_BY  = playwrightwrapper.ByCSSSelector
+	PASSWORD_INPUT_BY  = playwrightwrapper.ByLocator
 	PASSWORD_INPUT_VAL = "#password_input"
 
-	SIGN_IN_BTN_BY  = playwrightwrapper.ByCSSSelector
+	SIGN_IN_BTN_BY  = playwrightwrapper.ByLocator
 	SIGN_IN_BTN_VAL = "#pc_btnLogin"
 
 	/* -- WEB PAGE CREATE RESERVATION -- */
 	// begin booking
-	CREATE_RESERVATION_BTN_BY  = selenium.ByLinkText
+	CREATE_RESERVATION_BTN_BY  = playwrightwrapper.ByTitle
 	CREATE_RESERVATION_BTN_VAL = "Create A Reservation"
 
-	BOOKING_TYPE_BTN_STUDENT_ORGS_BY  = selenium.ByXPATH
+	BOOKING_TYPE_BTN_STUDENT_ORGS_BY  = playwrightwrapper.ByLocator
 	BOOKING_TYPE_BTN_STUDENT_ORGS_VAL = `//*[@aria-label='Book Now With The "Request Spaces | Student Orgs" Template']`
-	BOOKING_TYPE_BTN_STUDY_ROOM_BY    = selenium.ByXPATH
+	BOOKING_TYPE_BTN_STUDY_ROOM_BY    = playwrightwrapper.ByLocator
 	BOOKING_TYPE_BTN_STUDY_ROOM_VAL   = `//*[@aria-label='Book Now With The "Reserve Spaces | Study Rooms & Open Desk" Template']`
 
 	// reservation time

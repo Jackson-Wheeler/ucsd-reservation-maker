@@ -9,21 +9,24 @@ import (
 
 // Methods by which to find elements.
 const (
-	ByText        = "ByText"
-	ByCSSSelector = "ByCSSSelector"
+	ByText    = "ByText"
+	ByTitle   = "ByTitle"
+	ByLocator = "ByLocator"
 )
 
 /*
 FindElement finds an element by the specified method and value. Returns a Locator object, with no garuntee that that object is valid.
 
-method: the method by which to find the element (e.g. ByText, ByCSSSelector)
+method: the method by which to find the element (e.g. ByText, ByLocator)
 
 value: the value to search for
 */
 func (pw *PlaywrightWrapper) FindElement(method string, value string) (playwright.Locator, error) {
 	if method == ByText {
 		return pw.CurrPage.GetByText(value).First(), nil
-	} else if method == ByCSSSelector {
+	} else if method == ByTitle {
+		return pw.CurrPage.GetByTitle(value).First(), nil
+	} else if method == ByLocator {
 		return pw.CurrPage.Locator(value), nil
 	} else {
 		return nil, fmt.Errorf("FindElement() invalid method: '%s'", method)
@@ -33,7 +36,7 @@ func (pw *PlaywrightWrapper) FindElement(method string, value string) (playwrigh
 /*
 FindElemAndClick finds an element by the specified method and value, then clicks it.
 
-method: the method by which to find the element (e.g. ByText, ByCSSSelector)
+method: the method by which to find the element (e.g. ByText, ByLocator)
 
 value: the value to search for
 */

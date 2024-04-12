@@ -6,7 +6,6 @@ import (
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/playwrightwrapper"
-	"github.com/tebeka/selenium"
 )
 
 // MakeReservations makes the reservations on reservations.ucsd.edu according to the given config, using the given site credentials to login.
@@ -34,9 +33,12 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, o
 	}
 
 	// // create each reservation
-	// for _, time := range config.ReservationTimes {
-	// 	createReservation(driver, time, config.RoomPreferenceOrder, config.ReservationDetails)
-	// }
+	for _, time := range config.ReservationTimes {
+		err = createReservation(pw, time, config.RoomPreferenceOrder, config.ReservationDetails)
+		if err != nil {
+			return fmt.Errorf("error creating reservation for date '%s': %v", time.Date, err)
+		}
+	}
 
 	// finish up
 	time.Sleep(5 * time.Second) // TEMP
@@ -96,29 +98,31 @@ func login(pw *playwrightwrapper.PlaywrightWrapper, siteCredentials SiteCredenti
 }
 
 // creates a reservation for the specified time given the room preference order and reservation details
-func createReservation(driver selenium.WebDriver, resTime myconfig.ReservationTime, roomPreferenceOrder []string, reservationDetails myconfig.ReservationDetails) {
+func createReservation(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfig.ReservationTime, roomPreferenceOrder []string, reservationDetails myconfig.ReservationDetails) error {
 
 	fmt.Printf("\nCreating reservation for %s from %s to %s...\n", resTime.Date, resTime.StartTime, resTime.EndTime)
 
 	// begin booking
-	beginBooking(driver, BOOKING_TYPE_STUDY_ROOM)
+	beginBooking(pw, BOOKING_TYPE_STUDY_ROOM)
 
 	// set reservation time
-	setReservationTime(driver, resTime)
+	// setReservationTime(driver, resTime)
 
-	// select room
-	roomName, err := selectRoom(driver, roomPreferenceOrder, reservationDetails)
-	if err != nil {
-		fmt.Printf("*no reservation made for %s from %s to %s - %v\n", resTime.Date, resTime.StartTime, resTime.EndTime, err)
-		return
-	}
-	fmt.Printf("selected room '%s'\n", roomName)
+	// // select room
+	// roomName, err := selectRoom(driver, roomPreferenceOrder, reservationDetails)
+	// if err != nil {
+	// 	fmt.Printf("*no reservation made for %s from %s to %s - %v\n", resTime.Date, resTime.StartTime, resTime.EndTime, err)
+	// 	return
+	// }
+	// fmt.Printf("selected room '%s'\n", roomName)
 
-	// add reservation details
-	addReservationDetails(driver, reservationDetails)
+	// // add reservation details
+	// addReservationDetails(driver, reservationDetails)
 
-	// click create reservation button
-	finishReservation(driver)
+	// // click create reservation button
+	// finishReservation(driver)
 
-	fmt.Printf("*reservation created for '%s'\n", roomName)
+	//fmt.Printf("*reservation created for '%s'\n", roomName)
+
+	return nil
 }

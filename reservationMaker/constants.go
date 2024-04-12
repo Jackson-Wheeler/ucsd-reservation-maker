@@ -1,7 +1,10 @@
 /* constants for webdriver package */
 package reservationMaker
 
-import "github.com/tebeka/selenium"
+import (
+	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/playwrightwrapper"
+	"github.com/tebeka/selenium"
+)
 
 /* types */
 type SiteCredentials struct {
@@ -32,17 +35,17 @@ const (
 	RESERVER_STATUS_STUDENT_OPT_VAL = "53"
 
 	/* -- WEB PAGE LOGIN -- */
-	LOGIN_BTN_BY  = selenium.ByLinkText
+	LOGIN_BTN_BY  = playwrightwrapper.ByText
 	LOGIN_BTN_VAL = "Login"
 
-	USERNAME_INPUT_BY  = selenium.ByID
-	USERNAME_INPUT_VAL = "userID_input"
+	USERNAME_INPUT_BY  = playwrightwrapper.ByCSSSelector
+	USERNAME_INPUT_VAL = "#userID_input"
 
-	PASSWORD_INPUT_BY  = selenium.ByID
-	PASSWORD_INPUT_VAL = "password_input"
+	PASSWORD_INPUT_BY  = playwrightwrapper.ByCSSSelector
+	PASSWORD_INPUT_VAL = "#password_input"
 
-	SIGN_IN_BTN_BY  = selenium.ByID
-	SIGN_IN_BTN_VAL = "pc_btnLogin"
+	SIGN_IN_BTN_BY  = playwrightwrapper.ByCSSSelector
+	SIGN_IN_BTN_VAL = "#pc_btnLogin"
 
 	/* -- WEB PAGE CREATE RESERVATION -- */
 	// begin booking

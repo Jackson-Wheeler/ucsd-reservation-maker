@@ -4,7 +4,10 @@
 package playwrightwrapper
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/playwright-community/playwright-go"
 )
@@ -39,9 +42,9 @@ func (pw *PlaywrightWrapper) Initialize(headlessMode bool, browserContextStrict 
 	if err != nil {
 		// if error, assume browser and OS dependencies not installed
 		// -> install browser and OS dependencies
-		err = playwright.Install()
+		err = installPlaywright()
 		if err != nil {
-			return fmt.Errorf("error installing Playwright browser and OS dependencies: %v", err)
+			return err
 		}
 
 		// try to launch browser again
@@ -80,5 +83,30 @@ func (pw *PlaywrightWrapper) Close() error {
 	if err := pw.Playwright.Stop(); err != nil {
 		return fmt.Errorf("could not stop Playwright: %v", err)
 	}
+	return nil
+}
+
+// InstallPlaywright() installs the Playwright browser and OS dependencies, asking the
+// user for confirmation before doing so
+func installPlaywright() error {
+	// inform user of installation
+	fmt.Println("Automated browser dependencies not detected. They need to be installed for the UCSD Reservation Maker program to run.")
+	// ask for confirmation
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Are you ok with the dependencies being installed (this only needs to be done once)? (y/n): ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\n", "", -1)
+
+	// if user confirms, install dependencies
+	if text == "y" || text == "Y" {
+		err := playwright.Install()
+		if err != nil {
+			return fmt.Errorf("error installing Playwright browser and OS dependencies: %v", err)
+		}
+	} else {
+		fmt.Println("Exiting program. Dependencies not installed.")
+		os.Exit(0)
+	}
+
 	return nil
 }

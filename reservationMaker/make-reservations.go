@@ -32,7 +32,7 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, o
 		return fmt.Errorf("error logging in: %v", err)
 	}
 
-	// // create each reservation
+	// create each reservation
 	for _, time := range config.ReservationTimes {
 		err = createReservation(pw, time, config.RoomPreferenceOrder, config.ReservationDetails)
 		if err != nil {
@@ -41,7 +41,6 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, o
 	}
 
 	// finish up
-	time.Sleep(30 * time.Second) // TEMP
 	fmt.Println("\nDone - see above for log of created reservations")
 
 	return nil
@@ -128,10 +127,13 @@ func createReservation(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfig
 		return fmt.Errorf("error adding reservation details: %v", err)
 	}
 
-	// // click create reservation button
-	// finishReservation(driver)
+	// click create reservation button
+	err = finishReservation(pw)
+	if err != nil {
+		return fmt.Errorf("error finishing reservation: %v", err)
+	}
 
-	//fmt.Printf("*reservation created for '%s'\n", roomName)
+	fmt.Printf("*reservation created for '%s'\n", roomName)
 
 	return nil
 }

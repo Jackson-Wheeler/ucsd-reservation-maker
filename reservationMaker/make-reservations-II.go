@@ -6,8 +6,6 @@ import (
 
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/myconfig"
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/playwrightwrapper"
-	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/webdriver"
-	"github.com/tebeka/selenium"
 )
 
 // begin booking: create reservation btn & booking type btn
@@ -131,15 +129,21 @@ func addReservationDetails(pw *playwrightwrapper.PlaywrightWrapper, reservationD
 }
 
 // finish reservation: click create reservation button
-func finishReservation(driver selenium.WebDriver) {
-	// scroll to top
-	webdriver.ScrollToTop(driver)
-
+func finishReservation(pw *playwrightwrapper.PlaywrightWrapper) error {
 	// click the create reservation button (the first one on the page)
-	webdriver.FindAndClickElement(driver, FINISH_RESERVATION_BTN_BY, FINISH_RESERVATION_BTN_VAL)
+	finishResBtn, err := pw.FindElement(FINISH_RESERVATION_BTN_BY, FINISH_RESERVATION_BTN_VAL)
+	if err != nil {
+		return fmt.Errorf("error finding finish reservation button: %v", err)
+	}
+	err = finishResBtn.First().Click()
+	if err != nil {
+		return fmt.Errorf("error clicking finish reservation button: %v", err)
+	}
 
 	// dismiss the pop up
-	webdriver.WaitForElementReady(driver, OK_CONFIRMATION_BTN_BY, OK_CONFIRMATION_BTN_VAL)
-	time.Sleep(500 * time.Millisecond)
-	webdriver.FindAndClickElement(driver, OK_CONFIRMATION_BTN_BY, OK_CONFIRMATION_BTN_VAL)
+	pw.WaitForElement(OK_CONFIRMATION_BTN_BY, OK_CONFIRMATION_BTN_VAL)
+	time.Sleep(500 * time.Millisecond) // wait for the pop up to fully load
+	pw.FindElemAndClick(OK_CONFIRMATION_BTN_BY, OK_CONFIRMATION_BTN_VAL)
+
+	return nil
 }

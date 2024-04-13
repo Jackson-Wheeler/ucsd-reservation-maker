@@ -1,6 +1,7 @@
 package reservationMaker
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -37,9 +38,8 @@ func selectRoom(pw *playwrightwrapper.PlaywrightWrapper, roomPreferenceOrder []s
 		return selectedRoomName, nil
 	}
 
-	// // if preferred rooms are not available
-	// return "", errors.New("preferred rooms are not available")
-	return "", nil
+	// if preferred rooms are not available
+	return "", errors.New("preferred rooms are not available")
 }
 
 // get a map of room names to room elements (from web page)

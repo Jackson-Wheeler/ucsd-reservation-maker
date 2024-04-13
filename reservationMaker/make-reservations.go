@@ -14,7 +14,7 @@ import (
 func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, openFlag bool) error {
 	// initialize PlaywrightWrapper - Playwright is the software controlling the automated browser
 	pw := &playwrightwrapper.PlaywrightWrapper{}
-	err := pw.Initialize(false)
+	err := pw.Initialize(false, false)
 	if err != nil {
 		return fmt.Errorf("error initializing Playwright (automated browser controlling software): %v", err)
 	}
@@ -41,7 +41,7 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, o
 	}
 
 	// finish up
-	time.Sleep(10 * time.Second) // TEMP
+	time.Sleep(30 * time.Second) // TEMP
 	fmt.Println("\nDone - see above for log of created reservations")
 
 	return nil
@@ -114,13 +114,13 @@ func createReservation(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfig
 		return fmt.Errorf("error setting reservation time: %v", err)
 	}
 
-	// // select room
-	// roomName, err := selectRoom(driver, roomPreferenceOrder, reservationDetails)
-	// if err != nil {
-	// 	fmt.Printf("*no reservation made for %s from %s to %s - %v\n", resTime.Date, resTime.StartTime, resTime.EndTime, err)
-	// 	return
-	// }
-	// fmt.Printf("selected room '%s'\n", roomName)
+	// select room
+	roomName, err := selectRoom(pw, roomPreferenceOrder, reservationDetails)
+	if err != nil {
+		fmt.Printf("*no reservation made for %s from %s to %s - %v\n", resTime.Date, resTime.StartTime, resTime.EndTime, err)
+		return nil
+	}
+	fmt.Printf("selected room '%s'\n", roomName)
 
 	// // add reservation details
 	// addReservationDetails(driver, reservationDetails)

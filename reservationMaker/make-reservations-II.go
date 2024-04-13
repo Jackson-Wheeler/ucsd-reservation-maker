@@ -39,6 +39,7 @@ func beginBooking(pw *playwrightwrapper.PlaywrightWrapper, bookingType int) erro
 // set reservation time: booking date, start time, end time, click search
 func setReservationTime(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfig.ReservationTime) error {
 	// wait for content to load
+	pw.WaitForElement(BOOKING_DATE_INPUT_BY, BOOKING_DATE_INPUT_VAL)
 	time.Sleep(500 * time.Millisecond)
 
 	// input the booking date

@@ -72,25 +72,28 @@ const (
 	SEARCH_BTN_VAL = "#date-time-collapse .btn-filter-search"
 
 	// room selection
-	ROOM_ITEM_BY  = selenium.ByCSSSelector
+	ROOM_ITEMS_READY_BY  = playwrightwrapper.ByText
+	ROOM_ITEMS_READY_VAL = "Rooms You Can Reserve"
+
+	ROOM_ITEM_BY  = playwrightwrapper.ByLocator
 	ROOM_ITEM_VAL = ".room-column.column"
 
-	ROOM_SELECT_BTN_BY  = selenium.ByCSSSelector
+	ROOM_SELECT_BTN_BY  = playwrightwrapper.ByLocator
 	ROOM_SELECT_BTN_VAL = ".fa-plus-circle"
 
-	NUMBER_OF_ATTENDEES_INPUT_BY  = selenium.ByID
-	NUMBER_OF_ATTENDEES_INPUT_VAL = "setup-add-count"
+	NUMBER_OF_ATTENDEES_INPUT_BY  = playwrightwrapper.ByLocator
+	NUMBER_OF_ATTENDEES_INPUT_VAL = "#setup-add-count"
 
-	ADD_ROOM_BTN_BY  = selenium.ByID
-	ADD_ROOM_BTN_VAL = "setup--add-modal-save"
+	ADD_ROOM_BTN_BY  = playwrightwrapper.ByLocator
+	ADD_ROOM_BTN_VAL = "#setup--add-modal-save"
 
-	ALERT_BY  = selenium.ByCSSSelector
+	ALERT_BY  = playwrightwrapper.ByLocator
 	ALERT_VAL = ".alert.alert-danger"
 
-	ALERT_MESSAGE_BY  = selenium.ByCSSSelector
+	ALERT_MESSAGE_BY  = playwrightwrapper.ByLocator
 	ALERT_MESSAGE_VAL = ".message"
 
-	SELECTED_ROOM_ITEM_BY  = selenium.ByCSSSelector
+	SELECTED_ROOM_ITEM_BY  = playwrightwrapper.ByLocator
 	SELECTED_ROOM_ITEM_VAL = ".selected-room-name"
 
 	// reservation details

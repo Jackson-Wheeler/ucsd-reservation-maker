@@ -19,7 +19,8 @@ type PlaywrightWrapper struct {
 // Initialize() initializes the PlaywrightWrapper struct. It starts Playwright, launches a browser, creates a browser context, and creates a new page on that browser (assigned to CurrPage).
 //
 // headlessMode: if true, the browser will be launched in headless mode (no GUI)
-func (pw *PlaywrightWrapper) Initialize(headlessMode bool) error {
+// browserContextStrict: if false, will disable strict for browserContext
+func (pw *PlaywrightWrapper) Initialize(headlessMode bool, browserContextStrict bool) error {
 	var err error
 
 	// start Playwright
@@ -51,7 +52,10 @@ func (pw *PlaywrightWrapper) Initialize(headlessMode bool) error {
 	}
 
 	// create a new browser context
-	pw.BrowserContext, err = pw.Browser.NewContext()
+	browserContextConfig := playwright.BrowserNewContextOptions{
+		StrictSelectors: playwright.Bool(browserContextStrict),
+	}
+	pw.BrowserContext, err = pw.Browser.NewContext(browserContextConfig)
 	if err != nil {
 		return fmt.Errorf("could not create browser context: %v", err)
 	}

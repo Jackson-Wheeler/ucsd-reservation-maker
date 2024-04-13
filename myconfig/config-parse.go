@@ -2,7 +2,6 @@ package myconfig
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -31,25 +30,25 @@ type ReservationTime struct {
 }
 
 // Parse Configuration File
-func ParseConfigFile(configFilePath string) Config {
-	var config Config
+func ParseConfigFile(configFilePath string) (*Config, error) {
+	var config *Config
 
 	// Read the YAML file
 	yamlFile, err := os.ReadFile(configFilePath)
 	if err != nil {
-		log.Fatalf("Error: failed to read configuration file: %v", err)
+		return nil, fmt.Errorf("failed to read configuration file: %v", err)
 	}
 
 	// Parse the YAML file into the Config struct
 	err = yaml.Unmarshal(yamlFile, &config)
 	if err != nil {
-		log.Fatalf("Error: failed to parse configuration file: %v", err)
+		return nil, fmt.Errorf("failed to parse configuration file: %v", err)
 	}
 
 	// Validate the parsed information
-	err = validateConfig(config)
+	err = validateConfig(*config)
 	if err != nil {
-		log.Fatalf("Error: invalid configuration file: %v", err)
+		return nil, fmt.Errorf("invalid configuration file: %v", err)
 	}
 
 	// Print the parsed information
@@ -59,7 +58,7 @@ func ParseConfigFile(configFilePath string) Config {
 	fmt.Printf("Reservation Times:\n%+v\n", config.ReservationTimes)
 	fmt.Printf("--- End: Configuration Details ---\n\n")
 
-	return config
+	return config, nil
 }
 
 // Validate the parsed configuration. Return error if invalid

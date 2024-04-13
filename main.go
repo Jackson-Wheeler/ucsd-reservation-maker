@@ -65,6 +65,12 @@ func parseCommandLineFlags() (bool, error) {
 		return false, fmt.Errorf("no flag specified")
 	}
 
+	if *openFlag {
+		fmt.Println("-o mode: Opening reservations page only (not making reservations)...")
+	} else if *reservationFlag {
+		fmt.Println("-r mode (default): Making reservations...")
+	}
+
 	return *openFlag, nil
 }
 

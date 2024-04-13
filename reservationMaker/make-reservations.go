@@ -32,7 +32,23 @@ func MakeReservations(config myconfig.Config, siteCredentials SiteCredentials, o
 		return fmt.Errorf("error logging in: %v", err)
 	}
 
-	// create each reservation
+	// if openFlag is true (-o), we only want to open the reservations page
+	if openFlag {
+		err = openReservationsPage(pw, config.ReservationTimes[0])
+		if err != nil {
+			return fmt.Errorf("error opening reservations page: %v", err)
+		}
+		// keep browser open until user quits
+		fmt.Println("\nBrowser is Open - navigate to the desired dates and times to view available reservations")
+		fmt.Println("Enter 'Ctrl+C' in this terminal to finish/quit...")
+
+		// infinite loop - until user quits program
+		for {
+			time.Sleep(10 * time.Second)
+		}
+	}
+
+	// else (-r) create each reservation
 	for _, time := range config.ReservationTimes {
 		err = createReservation(pw, time, config.RoomPreferenceOrder, config.ReservationDetails)
 		if err != nil {
@@ -91,6 +107,24 @@ func login(pw *playwrightwrapper.PlaywrightWrapper, siteCredentials SiteCredenti
 	err = pw.FindElemAndClick(SIGN_IN_BTN_BY, SIGN_IN_BTN_VAL)
 	if err != nil {
 		return fmt.Errorf("failed to click sign in button: %v", err)
+	}
+
+	return nil
+}
+
+func openReservationsPage(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfig.ReservationTime) error {
+	fmt.Printf("Opening reservations page for date: '%s'...\n", resTime.Date)
+
+	// begin booking
+	err := beginBooking(pw, BOOKING_TYPE_STUDY_ROOM)
+	if err != nil {
+		return fmt.Errorf("error beginning booking: %v", err)
+	}
+
+	// set reservation time
+	err = setReservationTime(pw, resTime)
+	if err != nil {
+		return fmt.Errorf("error setting reservation time: %v", err)
 	}
 
 	return nil

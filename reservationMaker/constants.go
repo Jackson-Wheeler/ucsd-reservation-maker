@@ -3,7 +3,6 @@ package reservationMaker
 
 import (
 	"github.com/Jackson-Wheeler/ucsd-reservation-maker/reservationMaker/playwrightwrapper"
-	"github.com/tebeka/selenium"
 )
 
 /* types */
@@ -97,37 +96,37 @@ const (
 	SELECTED_ROOM_ITEM_VAL = ".selected-room-name"
 
 	// reservation details
-	RESERVATION_DETAILS_BTN_BY  = selenium.ByXPATH
+	RESERVATION_DETAILS_BTN_BY  = playwrightwrapper.ByLocator
 	RESERVATION_DETAILS_BTN_VAL = `//a[@aria-label='Create a Reservation/Reservation Details']`
 
-	EVENT_NAME_INPUT_BY  = selenium.ByID
-	EVENT_NAME_INPUT_VAL = "event-name"
+	EVENT_NAME_INPUT_BY  = playwrightwrapper.ByLocator
+	EVENT_NAME_INPUT_VAL = "#event-name"
 
-	EVENT_TYPE_INPUT_BY  = selenium.ByID
-	EVENT_TYPE_INPUT_VAL = "event-type"
+	EVENT_TYPE_INPUT_BY  = playwrightwrapper.ByLocator
+	EVENT_TYPE_INPUT_VAL = "#event-type"
 
-	ORGANIZATION_INPUT_BY  = selenium.ByID
-	ORGANIZATION_INPUT_VAL = "availablegroups"
+	ORGANIZATION_INPUT_BY  = playwrightwrapper.ByLocator
+	ORGANIZATION_INPUT_VAL = "#availablegroups"
 
-	CONTACT_NAME_INPUT_BY  = selenium.ByXPATH
+	CONTACT_NAME_INPUT_BY  = playwrightwrapper.ByLocator
 	CONTACT_NAME_INPUT_VAL = `//input[@id='1stContactName']`
 
-	CONTACT_PHONE_INPUT_BY  = selenium.ByXPATH
+	CONTACT_PHONE_INPUT_BY  = playwrightwrapper.ByLocator
 	CONTACT_PHONE_INPUT_VAL = `//input[@id='1stContactPhone1']`
 
-	CONTACT_EMAIL_INPUT_BY  = selenium.ByXPATH
+	CONTACT_EMAIL_INPUT_BY  = playwrightwrapper.ByLocator
 	CONTACT_EMAIL_INPUT_VAL = `//input[@id='1stContactEmail']`
 
-	RESERVER_STATUS_INPUT_BY  = selenium.ByXPATH
+	RESERVER_STATUS_INPUT_BY  = playwrightwrapper.ByLocator
 	RESERVER_STATUS_INPUT_VAL = `//select[@id='28']`
 
-	DESCRIPTION_INPUT_BY  = selenium.ByXPATH
+	DESCRIPTION_INPUT_BY  = playwrightwrapper.ByLocator
 	DESCRIPTION_INPUT_VAL = `//textarea[@id='27']`
 
 	// finish reservation
-	FINISH_RESERVATION_BTN_BY  = selenium.ByXPATH
+	FINISH_RESERVATION_BTN_BY  = playwrightwrapper.ByLocator
 	FINISH_RESERVATION_BTN_VAL = `//*[@data-bind='click: function(){ return saveReservation(); }']`
 
-	OK_CONFIRMATION_BTN_BY  = selenium.ByXPATH
+	OK_CONFIRMATION_BTN_BY  = playwrightwrapper.ByLocator
 	OK_CONFIRMATION_BTN_VAL = `//button[@id='help-text-close-btn']`
 )

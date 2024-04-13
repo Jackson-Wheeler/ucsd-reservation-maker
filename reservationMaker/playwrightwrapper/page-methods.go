@@ -124,3 +124,22 @@ func (pw *PlaywrightWrapper) WaitForElement(method string, value string) error {
 
 	return nil
 }
+
+/*
+SelectFromDropdown selects the specified value from the dropdown, which can be found by the value with the given method.
+*/
+func (pw *PlaywrightWrapper) SelectFromDropdown(method string, value string, selectionValue string) error {
+	// Find dropdown
+	dropdownElem, err := pw.FindElement(method, value)
+	if err != nil {
+		return fmt.Errorf("error finding dropdown: %v", err)
+	}
+
+	// Select option
+	_, err = dropdownElem.SelectOption(playwright.SelectOptionValues{Values: &[]string{selectionValue}})
+	if err != nil {
+		return fmt.Errorf("error selecting option: %v", err)
+	}
+
+	return nil
+}

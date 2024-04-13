@@ -74,37 +74,60 @@ func setReservationTime(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfi
 }
 
 // add reservation details to the booking
-func addReservationDetails(driver selenium.WebDriver, reservationDetails myconfig.ReservationDetails) {
-	// scroll to top of page
-	webdriver.ScrollToTop(driver)
-
+func addReservationDetails(pw *playwrightwrapper.PlaywrightWrapper, reservationDetails myconfig.ReservationDetails) error {
 	// click the reservation details button
-	webdriver.FindAndClickElement(driver, RESERVATION_DETAILS_BTN_BY, RESERVATION_DETAILS_BTN_VAL)
+	err := pw.FindElemAndClick(RESERVATION_DETAILS_BTN_BY, RESERVATION_DETAILS_BTN_VAL)
+	if err != nil {
+		return fmt.Errorf("error clicking reservation details button: %v", err)
+	}
 
 	// input the event name
-	webdriver.ClearAndSendKeys(driver, EVENT_NAME_INPUT_BY, EVENT_NAME_INPUT_VAL, reservationDetails.EventName)
+	err = pw.FindElemAndSendKeys(EVENT_NAME_INPUT_BY, EVENT_NAME_INPUT_VAL, reservationDetails.EventName)
+	if err != nil {
+		return fmt.Errorf("error inputting event name: %v", err)
+	}
 
 	// do nothing -> event type = study room
 
 	// select organization - only ORGANIZATION_GROUP_STUDY_OPT_VAL is supported at this time
-	webdriver.SelectFromDropdown(driver, ORGANIZATION_INPUT_BY, ORGANIZATION_INPUT_VAL, ORGANIZATION_GROUP_STUDY_OPT_VAL)
+	err = pw.SelectFromDropdown(ORGANIZATION_INPUT_BY, ORGANIZATION_INPUT_VAL, ORGANIZATION_GROUP_STUDY_OPT_VAL)
+	if err != nil {
+		return fmt.Errorf("error selecting organization: %v", err)
+	}
 
 	// input the contact name
-	webdriver.WaitForElementReady(driver, CONTACT_NAME_INPUT_BY, CONTACT_NAME_INPUT_VAL)
-	webdriver.ClearAndSendKeys(driver, CONTACT_NAME_INPUT_BY, CONTACT_NAME_INPUT_VAL, reservationDetails.ContactName)
+	pw.WaitForElement(CONTACT_NAME_INPUT_BY, CONTACT_NAME_INPUT_VAL)
+	err = pw.FindElemAndSendKeys(CONTACT_NAME_INPUT_BY, CONTACT_NAME_INPUT_VAL, reservationDetails.ContactName)
+	if err != nil {
+		return fmt.Errorf("error inputting contact name: %v", err)
+	}
 
 	// input the contact phone
-	webdriver.ClearAndSendKeys(driver, CONTACT_PHONE_INPUT_BY, CONTACT_PHONE_INPUT_VAL, reservationDetails.ContactPhone)
+	err = pw.FindElemAndSendKeys(CONTACT_PHONE_INPUT_BY, CONTACT_PHONE_INPUT_VAL, reservationDetails.ContactPhone)
+	if err != nil {
+		return fmt.Errorf("error inputting contact phone: %v", err)
+	}
 
 	// input the contact email
-	webdriver.ClearAndSendKeys(driver, CONTACT_EMAIL_INPUT_BY, CONTACT_EMAIL_INPUT_VAL, reservationDetails.ContactEmail)
+	err = pw.FindElemAndSendKeys(CONTACT_EMAIL_INPUT_BY, CONTACT_EMAIL_INPUT_VAL, reservationDetails.ContactEmail)
+	if err != nil {
+		return fmt.Errorf("error inputting contact email: %v", err)
+	}
 
 	// select reserver status
-	webdriver.SelectFromDropdown(driver, RESERVER_STATUS_INPUT_BY, RESERVER_STATUS_INPUT_VAL, RESERVER_STATUS_STUDENT_OPT_VAL)
+	err = pw.SelectFromDropdown(RESERVER_STATUS_INPUT_BY, RESERVER_STATUS_INPUT_VAL, RESERVER_STATUS_STUDENT_OPT_VAL)
+	if err != nil {
+		return fmt.Errorf("error selecting reserver status: %v", err)
+	}
 
 	// input the description
-	webdriver.WaitForElementReady(driver, DESCRIPTION_INPUT_BY, DESCRIPTION_INPUT_VAL)
-	webdriver.ClearAndSendKeys(driver, DESCRIPTION_INPUT_BY, DESCRIPTION_INPUT_VAL, reservationDetails.Description)
+	pw.WaitForElement(DESCRIPTION_INPUT_BY, DESCRIPTION_INPUT_VAL)
+	err = pw.FindElemAndSendKeys(DESCRIPTION_INPUT_BY, DESCRIPTION_INPUT_VAL, reservationDetails.Description)
+	if err != nil {
+		return fmt.Errorf("error inputting description: %v", err)
+	}
+
+	return nil
 }
 
 // finish reservation: click create reservation button

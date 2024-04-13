@@ -122,8 +122,11 @@ func createReservation(pw *playwrightwrapper.PlaywrightWrapper, resTime myconfig
 	}
 	fmt.Printf("selected room '%s'\n", roomName)
 
-	// // add reservation details
-	// addReservationDetails(driver, reservationDetails)
+	// add reservation details
+	err = addReservationDetails(pw, reservationDetails)
+	if err != nil {
+		return fmt.Errorf("error adding reservation details: %v", err)
+	}
 
 	// // click create reservation button
 	// finishReservation(driver)

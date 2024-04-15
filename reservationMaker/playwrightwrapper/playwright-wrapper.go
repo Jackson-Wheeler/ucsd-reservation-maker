@@ -25,11 +25,21 @@ type PlaywrightWrapper struct {
 // browserContextStrict: if false, will disable strict for browserContext
 func (pw *PlaywrightWrapper) Initialize(headlessMode bool, browserContextStrict bool) error {
 	var err error
-
 	// start Playwright
 	pw.Playwright, err = playwright.Run()
 	if err != nil {
-		return fmt.Errorf("could not start Playwright: %v", err)
+		// if error, assume browser and OS dependencies not installed
+		// -> install browser and OS dependencies
+		err = installPlaywright()
+		if err != nil {
+			return err
+		}
+
+		// start Playwright
+		pw.Playwright, err = playwright.Run()
+		if err != nil {
+			return fmt.Errorf("error starting Playwright: %v", err)
+		}
 	}
 
 	// set browser configuration
